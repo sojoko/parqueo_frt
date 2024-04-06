@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
     return (
-      <header className="bg-amber-500">
+      <header className="bg-amber-700 border-none lg:w-full w-full">
         <div className="container mx-auto px-4 py-8 flex items-center">
 
           {/* logo */}
@@ -40,7 +40,7 @@ function Header() {
           </nav>
         </div>
 
-        <hr />
+       
       </header>
     );
 }
