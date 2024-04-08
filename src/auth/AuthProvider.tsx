@@ -25,12 +25,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return new Promise((resolve, reject) => {
       setAccessToken(x.access_token); 
       setUserRoll(x.user_roll);   
-      setIsAuthenticated(true);
-      console.log(accessToken);
-      resolve();
-      console.log(userRoll)
+      setIsAuthenticated(true);      
+      resolve();     
       localStorage.setItem('userRoll', x.user_roll);
       localStorage.setItem('isAuthenticated', true);
+      localStorage.setItem('userDocument', x.document);
     });
   }
 

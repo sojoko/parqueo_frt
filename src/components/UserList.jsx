@@ -34,7 +34,7 @@ const TABS = [
   },
 ];
  
-const TABLE_HEAD = ["Nombre", "Roll", "Estado", ""];
+const TABLE_HEAD = ["Nombre", "Roll", "Estado", "Gestionar"];
  
 const TABLE_ROWS = [
   {
@@ -140,12 +140,12 @@ useEffect(() => {
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
-        <table className="mt-4 w-full min-w-max table-auto text-left">
+        <table className="mt-2 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
                 <th
-                  key={head}
+                  k ey={head}
                   className="border-y border-purple-300 bg-blue-gray-50/50 p-4"
                 >
                   <Typography
@@ -210,7 +210,7 @@ useEffect(() => {
                         <Chip
                           variant="ghost"
                           size="sm"
-                          value={online ? "online" : "offline"}
+                          value={online ? "activo" : "inactivo"}
                           color={online ? "green" : "blue-gray"}
                         />
                       </div>

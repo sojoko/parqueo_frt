@@ -15,6 +15,11 @@ import { AuthProvider } from "./auth/AuthProvider.tsx";
 import { PageNotFound } from './layout/404.tsx';
 import { UserAdminSection } from './pages/userAdminSection.jsx';
 import { UserListView } from './pages/UserListView.jsx';
+import { RegistrationEmployers } from './pages/RegistrationEmployers.jsx';
+import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
+import { SetPasswordView } from './pages/SetPasswordView.jsx';
+import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
+import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
 
 const router = createBrowserRouter([
 
@@ -30,11 +35,7 @@ const router = createBrowserRouter([
   {
       path: '/estado-solicitud-registro',
       element: <RegistrationStatusFormView />
-  },
-  {
-      path: '/qr-generator',
-      element: <QRGeneratorView />
-  },
+  }, 
   {
       path: '/',
       element: <ProtectedRoute/>,
@@ -69,13 +70,73 @@ const router = createBrowserRouter([
     path: '/',
     element: <ProtectedRoute/>,
     children:[
+        {
+          path: '/user-registration-employees',
+          element: <RegistrationEmployers/>
+      }
+    ]
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+        {
+          path: '/user-registration-request',
+          element: <RegistrationRequestList/>
+      }
+    ]
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
       {
         path: '/home',
         element: <LoggedHome />
     }
   ]
-  }
-  
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/qr-generator',
+        element: <QRGeneratorView />
+    }
+  ]
+  },  
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/set-password',
+        element: <SetPasswordView />
+    }
+  ]
+  },  
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/aprendiz-info-full',
+        element: <AprendizDataTabView />
+    }
+  ]
+  },  
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/aprendiz-info',
+        element: <AprendizCardInfoView />
+    }
+  ]
+  },  
+
 
 ]);
 

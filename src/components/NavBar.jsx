@@ -18,15 +18,23 @@ function NavBar() {
     const [isActiveHome, setIsActiveHome] = useState(false);
     const [isActiveQR, setIsActiveQR] = useState(false);
     const [isActiveUsers, setIsActiveUsers] = useState(false);
+    const [isActiveUsersList, setIsActiveUsersList] = useState(false);
     const [isActiveParking, setIsActiveParking] = useState(false);
     const [isActiveTickets, setIsActiveTickets] = useState(false);
+    const [isActiveCreateUserEmployee, setIsActiveCreateUserEmployee] = useState(false);
+    const [isActiveAprendizRequest, setIsActiveAprendizRequest] = useState(false);
 
     useEffect(() => {
         setIsActiveHome(location.pathname === '/home');
         setIsActiveUsers(location.pathname === '/users-administration');
+        setIsActiveUsersList(location.pathname === '/users-administration-list');
         setIsActiveQR(location.pathname === '/qr-generator');
         setIsActiveParking(location.pathname === '/parking');
         setIsActiveTickets(location.pathname === '/tickets');
+        setIsActiveCreateUserEmployee(location.pathname === '/user-registration-employees');
+        setIsActiveAprendizRequest(location.pathname === '/user-registration-request');
+      
+        
     }, [location]);
 
   return (
@@ -50,7 +58,7 @@ function NavBar() {
                     </div>
                 <div className="flex-1 group ">
                 {roll == 2 && (
-                    <a href="ruta1" className={`${isActiveQR ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-800 group-hover:text-purple-700`}>
+                    <a href="/qr-generator" className={`${isActiveQR ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                     <span className="block px-1 pt-1">
                         <div className="flex justify-center text-3xl lg:text-5xl"><IoQrCodeOutline /></div>
                         <span className="block text-s font-bold pb-1 lg:text-2xl">QR</span>
@@ -59,17 +67,17 @@ function NavBar() {
                     </a>
                 )}
                 {roll == 1 && (
-                    <a href="/users-administration" className={`${isActiveUsers ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
+                    <a href="/users-administration" className={`${isActiveUsers || isActiveUsersList || isActiveCreateUserEmployee || isActiveAprendizRequest ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                     <span className="block px-1 pt-1">
                         <div className="flex justify-center text-3xl lg:text-5xl"><HiOutlineUsers /></div>
                         <span className="block text-s font-bold pb-1 lg:text-2xl">Usuarios</span>
-                        <span className={`block w-5 mx-auto h-1 rounded-full ${isActiveUsers ? 'bg-purple-700' : 'group-hover:bg-purple-700'}`}></span>
+                        <span className={`block w-5 mx-auto h-1 rounded-full ${isActiveUsers || isActiveUsersList || isActiveCreateUserEmployee || isActiveAprendizRequest ? 'bg-purple-700' : 'group-hover:bg-purple-700'}`}></span>
                     </span>
                     </a>
                 )}
                 </div>
                 <div className="flex-1 group">
-                    <a href="#" className={`${isActiveQR ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
+                    <a href="#" className={`${isActiveParking ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                         <span className="block px-1 pt-1">
                             <div className="flex justify-center text-3xl lg:text-5xl"><GrBike /></div>
                             <span className="block text-s font-bold pb-1 lg:text-2xl">Parking</span>
@@ -78,7 +86,7 @@ function NavBar() {
                     </a>
                 </div>
                 <div className="flex-1 group">
-                    <a href="#" className={`${isActiveQR ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
+                    <a href="#" className={`${isActiveParking ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                         <span className="block px-1 pt-1">
                             <div className="flex justify-center text-3xl lg:text-5xl"><GrContact /></div>
                             <span className="block text-s font-bold pb-1 lg:text-2xl">Tickets</span>

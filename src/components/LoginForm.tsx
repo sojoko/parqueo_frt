@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { API_URLS } from '../auth/ApisUrls.tsx';
 import { AuthProvider, useAuth } from '../auth/AuthProvider.tsx';
-import { AuthResponse, AuthResponseError } from "../types/types.ts";
 import { Navigate } from "react-router-dom";
 
 
@@ -31,8 +30,7 @@ function LoginForm() {
                 throw new Error('Error en la solicitud');            
 
             }
-            const data = await response.json();
-            console.log("el nombre es " + data.name);
+            const data = await response.json();            
             if(data){            
                auth.saveUser(data);
                            
@@ -91,7 +89,7 @@ function LoginForm() {
                     type="submit" 
                     disabled={!password || !document}
                     className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium
-                     text-white bg-amber-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white
+                     text-white bg-amber-700 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white
                      ${!password || !document ? 'cursor-not-allowed opacity-50 hover:bg-amber-500': ''} `}>
                         Login
                     </button>
