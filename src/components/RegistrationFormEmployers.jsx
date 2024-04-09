@@ -10,8 +10,7 @@ function RegistrationFormEmployers() {
   const [document, setDocument] = useState("");
   const [documentSender, setDocumentSender] = useState("");
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  
+  const queryParams = new URLSearchParams(location.search);  
   const rollSender = queryParams.get('rollSender') || '';
 
 

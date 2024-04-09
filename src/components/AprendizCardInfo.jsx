@@ -1,97 +1,143 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
     Typography,
     Tooltip,
     Chip,
   } from "@material-tailwind/react";
   
-  const Aprendiz = [
-    {
-      photo: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-      name: "John Michael",
-      email: "john@creative-tim.com",
-      roll: "Aprendiz",
-      document: "1020304050",
-      ficha: "2424242",
-      status: true,
-      APhoto: "#",
-      dateRequest: "23/04/18",
-      dateFinish: "23/04/2025",
-      VMarca: "Chevrolet",
-      VModelo: "2021",
-      VPlaca: "ABC123",
-      VColor: "Rojo",
-      VPhoto: "#",
-      VSoat: "#",
-      VTarjeta: "#",
-      VObservaciones: "ninguna",
-    },
-  ];
-
-
-  
-  export function AprendizCardInfo() {
+export function AprendizCardInfo() {
     const [documentSender, setDocumentSender] = useState("");
     const route = `/aprendiz-info-full?document=${documentSender}`;
-    function handleDocument(){
-        setDocumentSender(Aprendiz[0].document);
-      }
-    
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const document = queryParams.get('document') || '';
+    const [aprendizData, setAprendizData] = useState(null);
+    const [vehicleData, setvehicleData] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    function handleDocument() {
+     setDocumentSender(aprendizData.document);
+    }               
+
+    useEffect(() => {
+        handleLoad();
+        handleLoad2();
+    }, []); 
+
+    async function handleLoad() {
+        try {
+            setLoading(true);
+            const response = await fetch(`http://127.0.0.1:8000/api/v1/aprendices/${document}`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            const data = await response.json();
+            console.log('Respuesta de la API:', data);
+            setAprendizData(data);           
+           
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+    async function handleLoad2() {
+        try {
+            setLoading(true);
+            const response = await fetch(`http://127.0.0.1:8000/api/v1/moto/${document}`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            const data2 = await response.json();
+            console.log('Respuesta de la API:', data2);
+            setvehicleData(data2);           
+           
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     if (documentSender) {
         return <Navigate to={route} />;
     }
+
+    function formatearFecha(fecha) {
+        const fechaObj = new Date(fecha);
+        const dia = fechaObj.getDate();
+        const mes = fechaObj.getMonth() + 1;
+        const año = fechaObj.getFullYear();    
+        const fechaFormateada = `${dia < 10 ? '0' : ''}${dia}/${mes < 10 ? '0' : ''}${mes}/${año}`;
+        return fechaFormateada;
+    }
+    
+
     return (
-      <>
-        {Aprendiz.map((aprendiz, index) => (
-          <Card key={index} className="w-96">
-            <CardHeader floated={false} className="h-100">
-              <img src={aprendiz.photo} alt="profile-picture" />
-            </CardHeader>
-            <CardBody className="text-center">
-              <Typography variant="h4" color="blue-gray" className="mb-2">
-                {aprendiz.name}
-              </Typography>
-              <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                {aprendiz.roll}
-              </Typography>
-              <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                Fecha Finalizacion: {aprendiz.dateFinish}
-              </Typography>
-              <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                Documento: {aprendiz.document}
-              </Typography>
-              <Chip
-                variant="ghost"
-                size="sm"
-                value={aprendiz.status ? "Aceptado" : "Pendiente"}
-                color={aprendiz.status ? "green" : "orange"}
-             />
-              <Typography color="blue-gray" variant="h5" className="font-medium mt-4" textGradient>
-                Vehiculo Marca: {aprendiz.VMarca}
-              </Typography>
-              <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>
-                Vehiculo Modelo: {aprendiz.VModelo}
-              </Typography>
-              <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>
-                Vehiculo Color: {aprendiz.VColor}
-              </Typography>
+        <>  {loading && <div>Cargando...</div>}
+            {aprendizData && vehicleData && (
+                <Card className="w-96">
+                    <CardHeader floated={false} className="h-100">
+                        <img src={aprendizData.photo} alt="profile-picture" />
+                    </CardHeader>
+                    <CardBody className="text-center">
+                        <Typography variant="h4" color="blue-gray" className="mb-2">
+                            {aprendizData.name} {aprendizData.last_name}
+                        </Typography>
+                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
+                            {aprendizData.email}
+                        </Typography>
+                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
+                            Fecha Finalizacion: {formatearFecha(aprendizData.finish_date)}
+                        </Typography>
+                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
+                            Documento:{aprendizData.document}
+                        </Typography>
+                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
+                            Ficha:{aprendizData.ficha}
+                        </Typography>      
+                        <Chip
+                            variant="ghost"
+                            size="sm"
+                            value={aprendizData.state_id === 2 ? "Pendiente" : "Aceptado"}
+                            color={aprendizData.state_id === 1 ? "green" : "orange"}
+                        />
+                       
+                        <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>
+                            Vehiculo Modelo: {vehicleData.modelo}
+                        </Typography>
+                        <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>
+                            Vehiculo Marca: {vehicleData.marca}
+                        </Typography>
+                        <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>
+                            Vehiculo Color: {vehicleData.color}
+                        </Typography>
 
-                <button onClick={handleDocument}>
-                <Typography color="blue-gray" variant="h6" className="font-medium mt-6 text-purple-600" textGradient>
-                Ver todos los datos
-                </Typography>
+                        <button onClick={handleDocument}>
+                            <Typography color="blue-gray" variant="h6" className="font-medium mt-6 text-purple-600" textGradient>
+                                Ver todos los datos
+                            </Typography>
+                        </button>
 
-                </button>
-             
-            </CardBody>         
-          </Card>
-        ))}
-      </>
+                    </CardBody>
+                </Card>
+            )}
+        </>
     );
-  }
-  
+}
