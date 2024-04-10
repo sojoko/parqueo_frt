@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { API_URLS } from '../auth/ApisUrls.tsx';
 import { AuthProvider, useAuth } from '../auth/AuthProvider.tsx';
 import { Navigate } from "react-router-dom";
+import { API_URL } from '../config/API_URLS.tsx';
 
 
 function LoginForm() {
@@ -19,7 +20,7 @@ function LoginForm() {
         event.preventDefault();
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/login`, {
+            const response = await fetch(`${API_URL}/login`, {
                 method: 'post',
                 body: JSON.stringify({document, password}),
                 headers: {

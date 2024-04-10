@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Navigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { API_URL } from '../config/API_URLS.tsx';
 
 
 function RegistrationFormEmployers() {
@@ -13,17 +14,16 @@ function RegistrationFormEmployers() {
   const queryParams = new URLSearchParams(location.search);  
   const rollSender = queryParams.get('rollSender') || '';
 
-
   const handleSubmit =  async (event) => {
       event.preventDefault();
 
       try {
           let apiURL = "";
-
+         
           if (rollSender == 1) {
-            apiURL = "http://127.0.0.1:8000/api/v1/admins-registration";
+            apiURL =  `${API_URL}/admins-registration`;
           } else if (rollSender == 3) {
-            apiURL = "http://127.0.0.1:8000/api/v1/vigilantes-registration";
+            apiURL = `${API_URL}/vigilantes-registration`;
           }
 
           const response = await fetch(`${apiURL}`, {
@@ -48,8 +48,6 @@ function RegistrationFormEmployers() {
       }
     
   };
-  console.log(documentSender);
-
 
   if (documentSender) {
     const route = `/set-password?document=${documentSender}&roll=${rollSender}`;
@@ -57,12 +55,6 @@ function RegistrationFormEmployers() {
   }
 
   const dishablesubmit = '';
-
-  // if (auth.isAuthenticated) {
-  //     return <Navigate to="/home" />;
-  // }
-
-
 
   return (
     <div className="">

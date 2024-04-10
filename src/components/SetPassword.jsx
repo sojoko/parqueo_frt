@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { Navigate } from "react-router-dom";
+import { API_URL } from '../config/API_URLS.tsx';
 
 
 
@@ -17,7 +18,7 @@ function SetPassword() {
         const document = documentSender;
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/create_user`, {
+            const response = await fetch(`${API_URL}/create_user`, {
                 method: 'post',
                 body: JSON.stringify({"document": documentSender, password, "roll_id": rollSender}),
                 headers: {

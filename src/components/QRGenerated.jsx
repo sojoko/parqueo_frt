@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal'; 
+import { API_URL } from '../config/API_URLS.tsx';
 
 function QRGenerated() {
     const [data, setData] = useState(null);
@@ -14,7 +15,7 @@ function QRGenerated() {
         event.preventDefault();
         const document = localStorage.getItem('userDocument');
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/qr?document=${document}`, {
+            const response = await fetch(`${API_URL}/qr?document=${document}`, {
                 method: 'post',
                 body: JSON.stringify({ user_document: 0, "registry_date": "string" }),
                 headers: {
@@ -28,7 +29,6 @@ function QRGenerated() {
             const data = await response.json();
             console.log('Respuesta de la API:', data);
 
-            // Move the alert statement outside of the try block
             alert('Codigo QR generado con exito');
             setData(data);
             setModalIsOpen(true); // Abre el modal cuando se recibe la respuesta con el código QR
@@ -51,7 +51,6 @@ function QRGenerated() {
              focus:ring-purple-300 font-medium rounded-lg text-center me-2 mb-2 dark:border-purple-400 dark:text-purple-400
               dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900 ${isActive ? 'hidden' : 'block'}`}  id='generated_qr' type="submit" onClick={handleSubmit}>Generar código QR</button>
 
-          
         </div>
     );
 }

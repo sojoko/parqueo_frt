@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { API_URL } from "../config/API_URLS.tsx";
 import {
     Card,
     CardHeader,
@@ -33,7 +34,7 @@ export function AprendizCardInfo() {
     async function handleLoad() {
         try {
             setLoading(true);
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/aprendices/${document}`, {
+            const response = await fetch(`${API_URL}/aprendices/${document}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
@@ -48,14 +49,12 @@ export function AprendizCardInfo() {
            
         } catch (error) {
             console.error('Error:', error);
-        } finally {
-            setLoading(false);
-        }
+        } 
     }
     async function handleLoad2() {
         try {
             setLoading(true);
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/moto/${document}`, {
+            const response = await fetch(`${API_URL}/moto/${document}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
@@ -99,19 +98,16 @@ export function AprendizCardInfo() {
                     <CardBody className="text-center">
                         <Typography variant="h4" color="blue-gray" className="mb-2">
                             {aprendizData.name} {aprendizData.last_name}
-                        </Typography>
-                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                            {aprendizData.email}
-                        </Typography>
-                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                            Fecha Finalizacion: {formatearFecha(aprendizData.finish_date)}
-                        </Typography>
+                        </Typography>                                          
                         <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
                             Documento:{aprendizData.document}
                         </Typography>
                         <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
                             Ficha:{aprendizData.ficha}
-                        </Typography>      
+                        </Typography>   
+                        <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
+                            Fecha Finalizacion: {formatearFecha(aprendizData.finish_date)}
+                        </Typography>   
                         <Chip
                             variant="ghost"
                             size="sm"
@@ -119,7 +115,7 @@ export function AprendizCardInfo() {
                             color={aprendizData.state_id === 1 ? "green" : "orange"}
                         />
                        
-                        <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>
+                        <Typography color="blue-gray" variant="h5" className="font-medium mt-6 " textGradient>
                             Vehiculo Modelo: {vehicleData.modelo}
                         </Typography>
                         <Typography color="blue-gray" variant="h5" className="font-medium " textGradient>

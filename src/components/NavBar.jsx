@@ -33,7 +33,6 @@ function NavBar() {
         setIsActiveTickets(location.pathname === '/tickets');
         setIsActiveCreateUserEmployee(location.pathname === '/user-registration-employees');
         setIsActiveAprendizRequest(location.pathname === '/user-registration-request');
-      
         
     }, [location]);
 
