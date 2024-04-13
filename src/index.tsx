@@ -20,6 +20,7 @@ import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
 import { SetPasswordView } from './pages/SetPasswordView.jsx';
 import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
 import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
+import { UserAdministrationView } from './pages/UserAdministrationView.jsx';
 
 const router = createBrowserRouter([
 
@@ -133,6 +134,16 @@ const router = createBrowserRouter([
       {
         path: '/aprendiz-info',
         element: <AprendizCardInfoView />
+    }
+  ]
+  },  
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/user-administration',
+        element: <UserAdministrationView />
     }
   ]
   },  

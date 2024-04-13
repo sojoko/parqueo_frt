@@ -2,7 +2,6 @@ import { IconName } from "react-icons/gr";
 import { GrHomeRounded } from "react-icons/gr";
 import { HiOutlineQrcode } from "react-icons/hi"
 import { IoQrCodeOutline } from "react-icons/io5";
-import { AiOutlineUser } from "react-icons/ai";
 import { GrBike } from "react-icons/gr";
 import { GrContact } from "react-icons/gr";
 import { useEffect, useState } from 'react';
