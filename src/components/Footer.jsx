@@ -35,7 +35,7 @@ function Footer() {
               </div>
             </div>
           </div>
-          <div className="flex lg:w-4/12 ml-4 justify-center text-center">
+          <div className="flex lg:w-4/12 justify-center text-center">
             <div className="text-xl">
               <p className="font-bold text-gray-900 dark:text-gray-100">Diseño y Desarrollo</p>
               <p className="mt-1 mb-1 text-black text-base">Juan Diego Morales</p>

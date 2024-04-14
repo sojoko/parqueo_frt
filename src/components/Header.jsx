@@ -60,7 +60,6 @@ function Header() {
          
          
 
-
           {/* search
           <div className="mr-auto w-full max-w-sm xl:max-w-lg 2xl:max-w-4xl bg-gray-100 rounded-md hidden xl:flex items-center">
             <input className="border-l border-gray-300 bg-transparent font-semibold text-sm mr-4 p-4" type="text" placeholder="Deseo buscar en Parqueo..." />

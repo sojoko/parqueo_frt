@@ -86,8 +86,6 @@ export function AprendizCardInfo() {
         const fechaFormateada = `${dia < 10 ? '0' : ''}${dia}/${mes < 10 ? '0' : ''}${mes}/${año}`;
         return fechaFormateada;
     }
-    
-
     return (
         <>  {loading && <div>Cargando...</div>}
             {aprendizData && vehicleData && (

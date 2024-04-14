@@ -54,7 +54,7 @@ function LoginForm() {
     return (
         <div className="h-full mt-24 mb-24 flex items-center justify-center w-full dark:bg-gray-950">
             <div className="bg-white shadow-lg rounded-lg px-8 py-6 max-w-md border-2 border-gray-300">
-                <h1 className="text-3xl text-amber-700 font-bold text-center mb-4 dark:text-amber-00">PARQUEO</h1>
+                <h1 className="text-3xl text-amber-700 font-bold text-center mb-4 dark:text-amber-00">Inicia Sesión</h1>
                 <form action="#">
                     <div className="mb-4">
                         <label htmlFor="document" className="block text-s font-medium text-start text-black :white mb-2">Documento de identidad</label>
