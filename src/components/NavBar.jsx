@@ -6,8 +6,6 @@ import { useLocation } from 'react-router-dom';
 import { PiEnvelopeSimple } from "react-icons/pi";
 import { PiMotorcycleFill } from "react-icons/pi"
 import { PiHouse } from "react-icons/pi";
-import { PiQrCode } from "react-icons/pi";
-import { TbQrcode } from "react-icons/tb";
 import { HiOutlineQrCode } from "react-icons/hi2";
 
 

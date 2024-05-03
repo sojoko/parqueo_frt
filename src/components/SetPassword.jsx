@@ -25,11 +25,11 @@ function SetPassword() {
                     'Content-Type': 'application/json'
                 }                
             });
-            if (response.status == 400) {
+            if (response.status === 400) {
                 alert('El usuario ya existe');
                
             }
-            if (response.status == 422) {
+            if (response.status === 422) {
                 alert('Introduce el formato de datos correcto');
                
             }   

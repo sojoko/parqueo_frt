@@ -1,10 +1,10 @@
-import { UserButtons } from "../components/UserButtons.jsx";
+import { UserAdminButtons } from "../components/UserAdminButtons.jsx";
 import { LoggedLayout } from "../layout/LoggedLayout.tsx";
 
 function UserAdminSection (){
     return (
         <LoggedLayout>      
-             <UserButtons/>
+             <UserAdminButtons/>
         </LoggedLayout>
     )
 }

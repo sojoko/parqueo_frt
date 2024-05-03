@@ -1,7 +1,44 @@
 import React from "react";
 import { useState } from "react";
+import { API_URL } from "../config/API_URLS.tsx";
 
-function RequestProcessModal() {
+function RequestProcessModal(props) {
+  console.log('props', props.document);
+  let stateId = 0;
+
+  function handlerStateIdAccept() {
+      stateId = 2;
+      handleChange();
+  }
+  function handlerStateIdReject() {
+    stateId = 3;
+    handleChange();
+}
+
+  async function handleChange() {
+    try {
+      
+        const response = await fetch(`${API_URL}/aprendiz-change-status`, {
+            method: 'put',
+            body: JSON.stringify({"document": props.document, "state_id": stateId}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        const data = await response.json();
+        console.log('Respuesta de la API:', data);  
+    
+   
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+      window.location.reload();
+    }
+  }
+
   return (
       <div
        className="fixed inset-0 z-50 overflow-auto bg-gray-900 bg-opacity-50 flex items-center justify-center"
@@ -34,6 +71,7 @@ function RequestProcessModal() {
             
             
               <button
+              onClick={handlerStateIdReject}
                 data-modal-hide="popup-modal"
                 type="button"
                 class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
@@ -41,6 +79,7 @@ function RequestProcessModal() {
                 Rechazar
               </button>
               <button
+                onClick={handlerStateIdAccept}
                 data-modal-hide="popup-modal"
                 type="button"
                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-green-500 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"

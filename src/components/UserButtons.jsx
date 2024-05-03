@@ -1,24 +1,13 @@
 import { PiSignOut } from "react-icons/pi";
-import { useState } from 'react';
-import { Navigate } from "react-router-dom";
 import { PiWrench } from "react-icons/pi";
 
 
 
 function UserButtons() {
    
-  const [rollSender, setRollSender] = useState("");
-  
   function clearLocalStorage() {
     localStorage.clear();
     window.location.href = '/';
-  }
-  function handleRoll2() {
-    setRollSender(3);
-  }
-  if (rollSender) {
-    const route = `/user-registration-employees?rollSender=${rollSender}`;
-    return <Navigate to={route} />;
   }
 
   return (
@@ -33,7 +22,7 @@ function UserButtons() {
             <h3 className="text-2xl">Cerrar Sesion</h3>
           </div>
       </button>    
-      <a href="/user-registration-request">
+      <a href="#">
           <div className="flex shadow-lg shadow-purple-700/50  items-center justify-center  text-4xl text-purple-700 hover:text-white border-2
            border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg px-5 py-2.5 text-center 
             mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900">
@@ -47,5 +36,4 @@ function UserButtons() {
 
   );
 }
-
 export { UserButtons };
