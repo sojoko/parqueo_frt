@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Home } from './pages/Home';
@@ -19,10 +18,7 @@ import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
 import { SetPasswordView } from './pages/SetPasswordView.jsx';
 import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
 import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
-import { TicketsListView } from './pages/TicketsListView.jsx';
-import { ViewTicket } from './pages/ViewTicket.jsx';
-import { CreateTicketFormView } from './pages/CreateTicketFormView.jsx';
-import { DashboardPage } from './pages/DashboardPage.jsx';
+
 
 const router = createBrowserRouter([
 
@@ -44,16 +40,7 @@ const router = createBrowserRouter([
       element: <ProtectedRoute/>,
       children:[
           {
-            path: '/dashboard',
-            element: <DashboardPage />
-        }
-      ]
-  },
-  {
-      path: '/',
-      element: <ProtectedRoute/>,
-      children:[
-          {
+
             path: '/users-administration',
             element: <UserAdminSection/>
         }
@@ -110,14 +97,9 @@ const router = createBrowserRouter([
   ]
   },  
   {
-    path: '/',
-    element: <ProtectedRoute/>,
-    children:[
-      {
         path: '/set-password',
         element: <SetPasswordView />
-    }
-  ]
+  
   },  
   {
     path: '/',
@@ -144,31 +126,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute/>,
     children:[
       {
-        path: '/TicketsTable',
-        element: <TicketsListView />
-    }
-  ]
-  }, 
-  {
-    path: '/',
-    element: <ProtectedRoute/>,
-    children:[
-      {
-        path: '/Ticket',
-        element: <ViewTicket />
-    }
-  ]
-  }, 
-  {
-    path: '/',
-    element: <ProtectedRoute/>,
-    children:[
-      {
-        path: '/CreateTicket',
-        element: <CreateTicketFormView />
-      }
-    ]
-  }
+
 
 
 ]);

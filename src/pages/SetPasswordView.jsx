@@ -3,9 +3,12 @@ import { LoggedLayout } from "../layout/LoggedLayout.tsx";
 
 function SetPasswordView (){
     return (
-        <LoggedLayout>      
+        // <LoggedLayout>  
+        <div className=" flex flex-col h-screen justify-center items-center bg-gray-100">
             <SetPassword/>
-        </LoggedLayout>
+        </div>    
+            
+        /* </LoggedLayout> */
     )
 }
 

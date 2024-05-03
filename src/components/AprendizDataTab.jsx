@@ -1,31 +1,17 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { RequestProcessModal } from "./RequestProcessModal";
 import {
   Card,
-  CardHeader,
-  Input,
   Typography,
-  Button,
   CardBody,
   Chip,
-  CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
   Avatar,
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
  
-const TABS = [
-  {
-    label: "Todos",
-    value: "all",
-  },
-];
  
 const TABLE_HEAD = ["Nombre", "Estado", "Documento","Ficha", "A-Foto", "Fecha-S", "Fecha-F", "V-Marca", "V-Modelo", "V-Placa",
 "V-Color", "V-Foto", "V-Soat", "V-Tarjeta", "V-Observaciones", "Acciones"];
@@ -82,16 +68,13 @@ const handleSearchChange = (event) => {
 
 
 useEffect(() => {
-    // Filtrar las filas según la pestaña seleccionada
     const newFilteredRows = TABLE_ROWS.filter((row) => {   
         if (selectedTab === 'all' || row.job === selectedTab) {
-          // Filtrar por nombre si no se selecciona una pestaña específica
           return row.name.toLowerCase().includes(searchTerm.toLowerCase());
         } else {
           return false;
         }
       });
-    // Actualizar el estado de las filas filtradas
     setFilteredRows(newFilteredRows);
   }, [selectedTab, searchTerm]);
   return (

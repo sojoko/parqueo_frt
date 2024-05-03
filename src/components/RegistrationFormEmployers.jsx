@@ -20,9 +20,9 @@ function RegistrationFormEmployers() {
       try {
           let apiURL = "";
          
-          if (rollSender == 1) {
+          if (rollSender === 1) {
             apiURL =  `${API_URL}/admins-registration`;
-          } else if (rollSender == 3) {
+          } else if (rollSender === 3) {
             apiURL = `${API_URL}/vigilantes-registration`;
           }
 
@@ -93,6 +93,7 @@ function RegistrationFormEmployers() {
               type="text"
               id="last_name"
               name="last_name"
+              placeholder="Gonzalez"
               value={last_name}
               onChange={(e) => setLastName(e.target.value)}
               required

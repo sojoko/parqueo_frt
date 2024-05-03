@@ -1,8 +1,12 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { RequestProcessModal } from "./RequestProcessModal";
+import { ImgModal } from "./ImgModal";
+import { API_URL } from "../config/API_URLS.tsx";
+import { PiImageSquare } from "react-icons/pi";
+
 import {
   Card,
   CardHeader,
@@ -17,115 +21,75 @@ import {
   Tab,
   Avatar,
   IconButton,
-  Tooltip,
 } from "@material-tailwind/react";
  
 const TABS = [
   {
     label: "Todos",
-    value: "all",
+    value: "all", 
+  },
+  {
+    label: "Pendientes",
+    value: 1,
+ 
   },
 ];
  
 const TABLE_HEAD = ["Nombre", "Estado", "Documento","Ficha", "A-Foto", "Fecha-S", "Fecha-F", "V-Marca", "V-Modelo", "V-Placa",
-"V-Color", "V-Foto", "V-Soat", "V-Tarjeta", "V-Observaciones", "Acciones"];
+"V-Color", "V-Foto", "V-Tarjeta", "V-Observaciones", "Acciones"];
  
-const TABLE_ROWS = [
-  {
-    photo: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    roll: "Aprendiz",  
-    document: "1020304050", 
-    ficha: "2424242",
-    status: false,
-    APhoto: "#",
-    dateRequest: "23/04/18",
-    dateFinish: "23/04/2022",
-    VMarca: "Chevrolet",
-    VModelo: "2021",
-    VPlaca: "ABC123",
-    VColor: "Rojo",
-    VPhoto: "#",
-    VSoat: "#",
-    VTarjeta: "#",
-    VObservaciones: "ninguna"
-  },
-  {
-    photo: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    roll: "Aprendiz",  
-    document: "1020304050", 
-    ficha: "2424242",
-    status: false,
-    APhoto: "#",
-    dateRequest: "23/04/18",
-    dateFinish: "23/04/2022",
-    VMarca: "Chevrolet",
-    VModelo: "2021",
-    VPlaca: "ABC123",
-    VColor: "Rojo",
-    VPhoto: "#",
-    VSoat: "#",
-    VTarjeta: "#",
-    VObservaciones: "ninguna"
-  },
-  {
-    photo: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    roll: "Aprendiz",  
-    document: "1020304050", 
-    ficha: "2424242",
-    status: false,
-    APhoto: "#",
-    dateRequest: "23/04/18",
-    dateFinish: "23/04/2022",
-    VMarca: "Chevrolet",
-    VModelo: "2021",
-    VPlaca: "ABC123",
-    VColor: "Rojo",
-    VPhoto: "#",
-    VSoat: "#",
-    VTarjeta: "#",
-    VObservaciones: "ninguna"
-  },
-  {
-    photo: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    roll: "Aprendiz",  
-    document: "1020304050", 
-    ficha: "2424242",
-    status: true,
-    APhoto: "#",
-    dateRequest: "23/04/18",
-    dateFinish: "23/04/2022",
-    VMarca: "Chevrolet",
-    VModelo: "2021",
-    VPlaca: "ABC123",
-    VColor: "Rojo",
-    VPhoto: "#",
-    VSoat: "#",
-    VTarjeta: "#",
-    VObservaciones: "ninguna"
-  },
-
-];
 export function AprendizRegistrationRequest() {
 const [selectedTab, setSelectedTab] = useState('all');
 const [filteredRows, setFilteredRows] = useState([]);
 const [searchTerm, setSearchTerm] = useState('');
 const [showModal, setShowModal] = useState(false);
+const [aprendizData, setAprendizData] = useState(null);
+const [loading, setLoading] = useState(false);
+const [hasLoadedData, setHasLoadedData] = useState(false);
+const [showModalImg, setShowModalImg] = useState(false);
+const [showModalVImg, setShowModalVImg] = useState(false);
+const [selectedPhotoUrl, setSelectedPhotoUrl] = useState(null);
+const [selectedVPhotoUrl, setSelectedVPhotoUrl] = useState(null);
+const [selectedDocument, setSelectedDocument] = useState(null);
 
-const handleOpenModal = () => {
-  setShowModal(!showModal);
-  console.log('Modal abierto');
+
+async function handleLoad() {
+  try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/aprendiz-statu`, {
+          method: 'get',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+      if (!response.ok) {
+          throw new Error('Error en la solicitud');
+      }
+      const data = await response.json();
+      console.log('Respuesta de la API:', data);  
+      setAprendizData(data);   
+      setFilteredRows(data);
+  } catch (error) {
+      console.error('Error:', error);
+  } finally {
+    setLoading(false);
+  }
 }
 
-const handleCloseModal = () => {
-  setShowModal(false);
+const handleOpenModal = (document) => {
+  setShowModal(!showModal);
+  console.log('Modal abierto');
+  setSelectedDocument(document);
+}
+
+const handleOpenModalImg = (photoUrl) => {
+  setShowModalImg(!showModalImg);
+  setSelectedPhotoUrl(photoUrl);
+}
+
+const handleOpenModalVImg = (photoUrl) => {
+  setShowModalImg(!showModalVImg);
+  setSelectedVPhotoUrl(photoUrl);
 }
 
 const handleTabChange = (event, newValue) => {
@@ -138,26 +102,57 @@ const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-
+  useEffect(() => {
+    if (!hasLoadedData) {
+      handleLoad();
+      setHasLoadedData(true);
+    }
+  }, [hasLoadedData]);
+  
 
 useEffect(() => {
-    // Filtrar las filas según la pestaña seleccionada
-    const newFilteredRows = TABLE_ROWS.filter((row) => {   
-        if (selectedTab === 'all' || row.job === selectedTab) {
-          // Filtrar por nombre si no se selecciona una pestaña específica
-          return row.name.toLowerCase().includes(searchTerm.toLowerCase());
-        } else {
-          return false;
-        }
-      });
-    // Actualizar el estado de las filas filtradas
+  const fetchDataAndFilter = async () => {
+    if (hasLoadedData && aprendizData) {
+    const newFilteredRows = aprendizData.filter((row) => {   
+      if (selectedTab === 'all' || row.state_id === selectedTab) {
+        return row.name.toLowerCase().includes(searchTerm.toLowerCase());
+      } else {
+        return false;
+      }
+    });
     setFilteredRows(newFilteredRows);
-  }, [selectedTab, searchTerm]);
+  };
+};
+  fetchDataAndFilter(); 
+}, [selectedTab, searchTerm, hasLoadedData]);
+
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
+  
   return (
+    <> {loading && <div className="w-100">Cargando...</div>}
+    {filteredRows && !loading && (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none ">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row ">
-          
+        <Tabs value={selectedTab} className="w-full md:w-max">
+            {console.log(selectedTab)}
+            <TabsHeader>
+              {TABS.map(({ label, value }) => (
+                <Tab key={value} value={value} onClick={(event) => handleTabChange(event, value)}>
+                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                </Tab>
+              ))}
+            </TabsHeader>
+          </Tabs>
           <div className="w-full md:w-72">
             <Input         
               label="Search"
@@ -165,7 +160,6 @@ useEffect(() => {
               icon={<MagnifyingGlassIcon className="h-5 w-5  text-purple-700" />}
               onChange={handleSearchChange}
               value={searchTerm}
-
             />
           </div>
         </div>
@@ -176,7 +170,7 @@ useEffect(() => {
             <tr>
               {TABLE_HEAD.map((head) => (
                 <th
-                  k ey={head}
+                  key={head}
                   className="border-y border-purple-300 bg-blue-gray-50/50 p-4"
                 >
                   <Typography
@@ -191,8 +185,11 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>         
-              {filteredRows.map(({ photo, name, email, status, document, ficha,APhoto, dateRequest, dateFinish, VMarca, VModelo, VPlaca, VColor, VPhoto, VSoat, VTarjeta, VObservaciones }, index) => {
+              {filteredRows.length > 0 ? (
+                 filteredRows.map(
+                  ({ photo, name, email, state_id, document, ficha, registry_date, finish_date, vehicle }, index) => {
                 const isLast = index === filteredRows.length  - 1;
+             
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50"; 
@@ -224,8 +221,8 @@ useEffect(() => {
                       <Chip
                           variant="ghost"
                           size="sm"
-                          value={status ? "Aceptado" : "Pendiente"}
-                          color={status ? "green" : "orange"}
+                          value={state_id === 2 ? "Aceptado" : state_id === 3 ? "Rechazado" : "Pendiente"}
+                          color={state_id === 2 ? "green" : state_id == 3 ? "red" : "orange"}
                         />
                       </div>
                     </td>
@@ -254,16 +251,12 @@ useEffect(() => {
                       </div>
                     </td> 
                     <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {APhoto}
-                          </Typography>
-                        
-                      </div>
+                    <button onClick={() => handleOpenModalImg(photo)} type="button">
+                        {showModalImg && <ImgModal img={selectedPhotoUrl}/>}
+                        <IconButton variant="text">
+                        <PiImageSquare className="text-lg" />
+                        </IconButton>                        
+                    </button>
                     </td> 
                     <td className={classes}>
                       <div className="w-max">
@@ -272,7 +265,7 @@ useEffect(() => {
                             color="blue-gray"
                             className="font-normal opacity-70"
                           >
-                            {dateRequest}
+                            {formatDate(registry_date)}
                           </Typography>
                         
                       </div>
@@ -284,122 +277,85 @@ useEffect(() => {
                             color="blue-gray"
                             className="font-normal opacity-70"
                           >
-                            {dateFinish}
-                          </Typography>
-                        
-                      </div>
-                    </td>   
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VMarca}
-                          </Typography>
-                        
-                      </div>
-                    </td>   
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VModelo}
-                          </Typography>
-                        
-                      </div>
-                    </td>    
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VPlaca}
-                          </Typography>
-                        
-                      </div>
-                    </td>    
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VColor}
-                          </Typography>
-                        
-                      </div>
-                    </td>     
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VPhoto}
-                          </Typography>
-                        
-                      </div>
-                    </td>     
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VSoat}
+                            {formatDate(finish_date)}
                           </Typography>
                         
                       </div>
                     </td> 
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VTarjeta}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VObservaciones}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <Tooltip content="Administrar" >
-                      <button onClick={handleOpenModal} class= "" type="button">   
-                        {showModal && <RequestProcessModal/>}
+                    {vehicle && (
+                      <>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                              {vehicle.marca}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                              {vehicle.modelo}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                              {vehicle.placa}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                              {vehicle.color}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                            <button onClick={() => handleOpenModalImg(vehicle.foto)} type="button">
+                                {showModalVImg && <ImgModal img={selectedVPhotoUrl}/>}
+                                <IconButton variant="text">
+                                <PiImageSquare className="text-lg" />
+                                </IconButton>                        
+                            </button>
+                        </td> 
+                        <td className={classes}>
+                            <button onClick={() => handleOpenModalImg(vehicle.tarjeta_propiedad)} type="button">
+                                {showModalVImg && <ImgModal img={selectedVPhotoUrl}/>}
+                                <IconButton variant="text">
+                                <PiImageSquare className="text-lg" />
+                                </IconButton>                        
+                            </button>
+                        </td> 
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                              {vehicle.observaciones }
+                            </Typography>
+                          </div>
+                        </td>            
+                      </>
+                    )}
+               
+                    <td className={classes}>                      
+                    <button onClick={() => handleOpenModal(document)} type="button" title="administrar">
+                        {showModal && <RequestProcessModal document={selectedDocument} />}
                         <IconButton variant="text">
                           <PencilIcon className="h-4 w-4 text-purple-600" />
-                        </IconButton>
-                        
-                        </button>
-                        
-                      </Tooltip>
+                        </IconButton>                        
+                     </button>
+
                     </td>
                   </tr>
                 );
-              },
+                  }
+            )) : (
+              <tr>
+                <td colSpan={4} className="p-4">
+                  Cargando...
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
@@ -418,5 +374,7 @@ useEffect(() => {
         </div>
       </CardFooter>
     </Card>
+     )}
+    </>
   );
 }

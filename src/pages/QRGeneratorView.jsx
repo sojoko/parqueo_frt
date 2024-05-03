@@ -4,7 +4,7 @@ import { LoggedLayout } from "../layout/LoggedLayout.tsx";
 function QRGeneratorView (){
     return (
         <LoggedLayout>        
-             <QRGenerated/>   
+            <QRGenerated/>
         </LoggedLayout>
     )
 }
