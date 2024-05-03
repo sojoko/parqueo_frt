@@ -1,12 +1,18 @@
  import React, { useState } from 'react';
 
+ 
+
   const RegistrationFormTicket = () => {
+    const document = localStorage.getItem('userDocument');
     const [formData, setFormData] = useState({       
-        vehicleType: '',
+        document: document,
+        vehicle_type: '',
         placa: '',
-        serial:'',
+        numero_marco:'',
         date: '',
-        description: ''
+        description: '',
+        photo: '',
+        status: '1'
     });
     const [errors, setErrors] = useState({});    
 
@@ -16,80 +22,68 @@
             ...formData,
             [name]: value
         });
-        
-    
-
     };
-    // const handleFileChange = (e) => {
-    //     setFormData({
-    //         ...formData,
-    //         photo: e.target.files[0]
-    //     });
-    // };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/v1/aprendiz-registration', {
-                method: 'post',
-                body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-            const data = await response.json();
-            console.log('Respuesta de la API:', data);
-            alert('El aprendiz fue registrado exitosamente');
-        } catch (error) {
-            console.error('Error:', error);
-            console.log(formData);
-            alert('Error al registrar el aprendiz');
-        }
+      e.preventDefault();
+      try {
+          const response = await fetch('http://127.0.0.1:8000/api/v1/tickets-registration', {
+              method: 'post',
+              body: JSON.stringify(formData),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+          if (!response.ok) {
+              throw new Error('Error en la solicitud');
+          }
+          const data = await response.json();
+          console.log('Respuesta de la API:', data);
+          alert('El ticket fue creado exitosamente');
+          window.location.replace('http://localhost:3000/TicketsTable');
+      } catch (error) {
+          console.error('Error:', error);
+          console.log(formData);
+          alert('Error al registrar el ticket');
+      }
     };
 
-    const [vehicleType, setVehicleType] = useState("");
+    const [vehicle_type, setVehicleType] = useState("");
 
     const handleVehicleTypeChange = (event) => {
       setVehicleType(event.target.value);
     };
 
-
-
   return (
-    <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">
+    <div className="min-h-screen flex items-center justify-center w-full bg-gray-200 dark:bg-gray-950">
       <div className="container mx-auto py-8">
-        <h1 className="text-2xl font-bold mb-6 text-center text-white">
+        <h1 className="text-2xl font-bold mb-6 text-center text-black">
           Datos del ticket
         </h1>
-        <form className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md"
-        onSubmit={handleSubmit}
-        >                  
+        <form className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md" onSubmit={handleSubmit}>                  
 
           <div className="max-w-2l mx-auto">
-          <label
+            <label
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
               Tipo de vehiculo
             </label>
             <select 
-              id="vehicleType"
-              name ="vehicleType"
-              required
-              className= " bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            
+              id="vehicle_type"
+              name ="vehicle_type"
+              //required
+              className= "bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            
               onChange={handleVehicleTypeChange}
-              value={formData.vehicleType}
+              value={formData.vehicle_type}
               >
-              <option defaultValue={"Ninguno"}>Ninguno</option>
+              <option Value="Ninguno">Ninguno</option>
               <option value="Motocicleta">Motocicleta</option>
               <option value="Bicicleta">Bicicleta</option>              
             </select>
           </div>
 
-          {vehicleType === "Motocicleta" && (
+          {vehicle_type === "Motocicleta" && (
             <div className="mb-4">
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
@@ -103,27 +97,27 @@
                 id="placa"
                 name="placa"
                 placeholder="ABC-12A"
-                value={formData.placa}
-                required
+                // value={formData.placa}
+                //required
               />
             </div>
           )}       
-          {vehicleType === "Bicicleta" && (
+          {vehicle_type === "Bicicleta" && (
             <div className="mb-4">
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
-                htmlFor="serial"
+                htmlFor="numero_marco"
               >
-                Numero de serial
+                Numero de marco
               </label>
               <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
                 type="text"
-                id="serial"
-                name="serial"
+                id="numero_marco"
+                name="numero_marco"
                 placeholder="SN00AA1234BB"
-                value={formData.serial}
-                required
+                // value={formData.numero_marco}
+                //required
               />
             </div>
           )}
@@ -141,9 +135,9 @@
               id="date"
               name="date"
               placeholder="2022-12-31"
-              value={formData.date}
-              onChange={handleInputChange}
-              required
+             value={formData.date}
+             onChange={handleInputChange}
+             required
             />
           </div>
          

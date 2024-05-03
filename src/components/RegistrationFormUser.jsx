@@ -18,10 +18,9 @@ import React, { useState } from 'react';
             ...formData,
             [name]: value
         });
-        
-    
-
     };
+
+    
     // const handleFileChange = (e) => {
     //     setFormData({
     //         ...formData,
@@ -52,15 +51,13 @@ import React, { useState } from 'react';
         }
     };
 
-
-
   return (
     <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">
-      <div className="container mx-auto py-8">
-        <h1 className="text-2xl font-bold mb-6 text-center text-white">
+      <div className="container mx-auto py-8 ">
+        <h1 className="text-3xl font-bold mb-4 text-center text-amber-700">
           Datos del aprendiz
         </h1>
-        <form className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md"
+        <form className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-lg border-2 border-gray-300"
         onSubmit={handleSubmit}
         >
           <div className="mb-4">
@@ -107,7 +104,7 @@ import React, { useState } from 'react';
             <select 
               id="documentType"
               required
-              className= " bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            >
+              className= " bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-700 focus:border-amber-700 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            >
               <option defaultValue={"Tipo de documento"}>Tipo de documento</option>
               <option value="CC">Cedula de ciudadania</option>
               <option value="CE">Cedula de extranjeria</option>
@@ -123,7 +120,7 @@ import React, { useState } from 'react';
              Numero de documento
             </label>
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
               type="text"
               id="document"
               name="document"
@@ -142,11 +139,11 @@ import React, { useState } from 'react';
              Numero de ficha
             </label>
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
               type="text"
               id="ficha"
               name="ficha"
-              placeholder="2454434 "
+              placeholder="2454434 " 
               pattern="^[0-9]+"
               value={formData.ficha}
               onChange={handleInputChange}
@@ -162,7 +159,7 @@ import React, { useState } from 'react';
               Email
             </label>
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
               type="email"
               id="email"
               name="email"
@@ -179,7 +176,7 @@ import React, { useState } from 'react';
               Fecha de finalizacion del programa
             </label>
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
               type="text"
               id="fish_date"
               name="finish_date"
@@ -229,7 +226,7 @@ import React, { useState } from 'react';
             Foto tipo carnet
           </label>
           <div className="flex w-full items-center justify-center">
-            <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-500">
+            <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-700">
               <svg
                 class="w-8 h-8"
                 fill="currentColor"
@@ -244,7 +241,7 @@ import React, { useState } from 'react';
           </div>
           </div>
           <button
-            className="w-full bg-amber-500 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+            className="w-full bg-amber-700 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition duration-300"
             type="submit"
           >
             Continuar

@@ -2,12 +2,12 @@ import React from 'react';
 
 function Header() {
     return (
-      <header className="bg-amber-500">
-        <div className="container mx-auto px-4 py-8 flex items-center">
+      <header className="bg-amber-700 border-none lg:w-full w-full">
+        <div className="container mx-auto px-4 py-2 lg:py-4 flex items-center">
 
           {/* logo */}
           <div className=" md:w-48 flex-shrink-0">
-            <img className="h-20 md:h-12" src="/Logo_Piloto.png" alt="logo" />           
+            <img className="h-12 md:h-12 lg:h-18" src="/Logo_Piloto.png" alt="logo" />           
           </div>
 
           {/* search */}
@@ -40,7 +40,7 @@ function Header() {
           </nav>
         </div>
 
-        <hr />
+       
       </header>
     );
 }

@@ -1,15 +1,15 @@
-import { RegistrationFormTicket } from "../components/RegistrationFormTicket";
+import { ViewTickets } from "../components/ViewTickets";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
-function RegistroIncidencia (){
+function ViewTicket (){
     return (
         <div>
             <Header/>
-            <RegistrationFormTicket/>
+            <ViewTickets/>
             <Footer/>
         </div>
     )
 }
 
-export {RegistroIncidencia};
+export {ViewTicket};

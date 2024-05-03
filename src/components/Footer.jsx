@@ -2,7 +2,7 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="font-sans relative pt-5 pb-3 md:pb-6 bg-amber-500">
+    <footer className="font-sans relative pt-5 pb-3  bg-amber-500">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap">
           <div className="flex w-full md:w-5/12">
@@ -87,6 +87,7 @@ function Footer() {
                   <li><a className="dark:text-black hover:underline py-1 text-sm" href='#'>Sofia Plus</a></li>
                   <li><a className="dark:text-black hover:underline py-1 text-sm" href='#'>Agencia Publica</a></li>
                   <li><a className="dark:text-black hover:underline py-1 text-sm" href='#'>Outlook</a></li>
+                  <li><a className="dark:text-black hover:underline py-1 text-sm" href='/estado-solicitud-registro'>Ver estado de la solicitud de registro</a></li>
                 </ul>
               </div>
             </div>
