@@ -1,7 +1,13 @@
+
 import { useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { RequestProcessModal } from "./RequestProcessModal";
+import { ImgModal } from "./ImgModal";
+import { API_URL } from "../config/API_URLS.tsx";
+import { PiImageSquare } from "react-icons/pi";
+import { useLocation } from 'react-router-dom';
+
 import {
   Card,
   Typography,
@@ -9,50 +15,72 @@ import {
   Chip,
   Avatar,
   IconButton,
-  Tooltip,
 } from "@material-tailwind/react";
  
+
  
 const TABLE_HEAD = ["Nombre", "Estado", "Documento","Ficha", "A-Foto", "Fecha-S", "Fecha-F", "V-Marca", "V-Modelo", "V-Placa",
-"V-Color", "V-Foto", "V-Soat", "V-Tarjeta", "V-Observaciones", "Acciones"];
+"V-Color", "V-Foto", "V-Tarjeta", "V-Observaciones"];
  
-const TABLE_ROWS = [
-  {
-    photo: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    roll: "Aprendiz",  
-    document: "1020304050", 
-    ficha: "2424242",
-    status: true,
-    APhoto: "#",
-    dateRequest: "23/04/18",
-    dateFinish: "23/04/2022",
-    VMarca: "Chevrolet",
-    VModelo: "2021",
-    VPlaca: "ABC123",
-    VColor: "Rojo",
-    VPhoto: "#",
-    VSoat: "#",
-    VTarjeta: "#",
-    VObservaciones: "ninguna"
-  },
-
-
-];
 export function AprendizDataTab() {
+const location = useLocation();
+const queryParams = new URLSearchParams(location.search);  
+const documentByParams = queryParams.get('document')
+
+
+
 const [selectedTab, setSelectedTab] = useState('all');
 const [filteredRows, setFilteredRows] = useState([]);
 const [searchTerm, setSearchTerm] = useState('');
 const [showModal, setShowModal] = useState(false);
+const [aprendizData, setAprendizData] = useState(null);
+const [loading, setLoading] = useState(false);
+const [hasLoadedData, setHasLoadedData] = useState(false);
+const [showModalImg, setShowModalImg] = useState(false);
+const [showModalVImg, setShowModalVImg] = useState(false);
+const [selectedPhotoUrl, setSelectedPhotoUrl] = useState(null);
+const [selectedVPhotoUrl, setSelectedVPhotoUrl] = useState(null);
+const [selectedDocument, setSelectedDocument] = useState(null);
 
-const handleOpenModal = () => {
-  setShowModal(!showModal);
-  console.log('Modal abierto');
+
+async function handleLoad() {
+  try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/aprendiz-statu/${documentByParams}`, {
+          method: 'get',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+      if (!response.ok) {
+          throw new Error('Error en la solicitud');
+      }
+      const data = await response.json();
+      console.log('Respuesta de la API:', data);  
+      setAprendizData(data);   
+      setFilteredRows(data);
+  } catch (error) {
+      console.error('Error:', error);
+  } finally {
+    setLoading(false);
+    console.log(aprendizData)
+  }
 }
 
-const handleCloseModal = () => {
-  setShowModal(false);
+const handleOpenModal = (document) => {
+  setShowModal(!showModal);
+  console.log('Modal abierto');
+  setSelectedDocument(document);
+}
+
+const handleOpenModalImg = (photoUrl) => {
+  setShowModalImg(!showModalImg);
+  setSelectedPhotoUrl(photoUrl);
+}
+
+const handleOpenModalVImg = (photoUrl) => {
+  setShowModalImg(!showModalVImg);
+  setSelectedVPhotoUrl(photoUrl);
 }
 
 const handleTabChange = (event, newValue) => {
@@ -65,19 +93,53 @@ const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  useEffect(() => {    
+   
+        handleLoad(); 
+    
+    
+  }, []);
+  
 
 
-useEffect(() => {
-    const newFilteredRows = TABLE_ROWS.filter((row) => {   
-        if (selectedTab === 'all' || row.job === selectedTab) {
-          return row.name.toLowerCase().includes(searchTerm.toLowerCase());
-        } else {
-          return false;
-        }
-      });
-    setFilteredRows(newFilteredRows);
-  }, [selectedTab, searchTerm]);
+
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
+  
   return (
+    
+    <>  {loading &&   <div class="text-center">
+      <div role="status">
+        <svg
+          aria-hidden="true"
+          class="inline w-8 h-8 text-gray-100 animate-spin dark:text-gray-600 fill-amber-600"
+          viewBox="0 0 100 101"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            fill="currentColor"
+          />
+          <path
+            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+            fill="currentFill"
+          />
+        </svg>
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>}
+    
+  
+    {aprendizData &&  (
     <Card className="h-full w-full">
      
       <CardBody className="overflow-scroll px-0">
@@ -101,220 +163,163 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>         
-              {filteredRows.map(({ photo, name, email, status, document, ficha,APhoto, dateRequest, dateFinish, VMarca, VModelo, VPlaca, VColor, VPhoto, VSoat, VTarjeta, VObservaciones }, index) => {
-                const isLast = index === filteredRows.length  - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50"; 
-                return (
-                  <tr key={name}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-2">
-                        <Avatar src={photo} alt={name} size="sm" />
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {name}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {email}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                      <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={status ? "Aceptado" : "Pendiente"}
-                          color={status ? "green" : "orange"}
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {document}
-                          </Typography>
-                        
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {ficha}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {APhoto}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {dateRequest}
-                          </Typography>
-                        
-                      </div>
-                    </td>  
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {dateFinish}
-                          </Typography>
-                        
-                      </div>
-                    </td>   
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VMarca}
-                          </Typography>
-                        
-                      </div>
-                    </td>   
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VModelo}
-                          </Typography>
-                        
-                      </div>
-                    </td>    
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VPlaca}
-                          </Typography>
-                        
-                      </div>
-                    </td>    
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VColor}
-                          </Typography>
-                        
-                      </div>
-                    </td>     
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VPhoto}
-                          </Typography>
-                        
-                      </div>
-                    </td>     
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VSoat}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VTarjeta}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <div className="w-max">
-                      <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {VObservaciones}
-                          </Typography>
-                        
-                      </div>
-                    </td> 
-                    <td className={classes}>
-                      <Tooltip content="Administrar" >
-                      <button onClick={handleOpenModal} class= "" type="button">   
-                        {showModal && <RequestProcessModal/>}
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4 text-purple-600" />
-                        </IconButton>
-                        
-                        </button>
-                        
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
+            <tr>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {aprendizData.name} {aprendizData.last_name}
+                </Typography>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                <Chip
+                  variant="filled"
+                  size="sm"
+                  value={
+                    aprendizData.state_id === 1 ? "Pendiente" :
+                    aprendizData.state_id === 2 ? "Aceptado" :
+                    "Rechazado"
+                  }
+                  color={
+                    aprendizData.state_id === 1 ? "orange" :
+                    aprendizData.state_id === 2 ? "green" :
+                    "red"
+                  }
+                />
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {aprendizData.document}
+                </Typography>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {aprendizData.ficha}
+                </Typography>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+              <button onClick={() => handleOpenModalImg(aprendizData.photo)} type="button">
+                        {showModalImg && <ImgModal img={selectedPhotoUrl}/>}
+                        <IconButton variant="text"
+                        color="blue"
+                        size="regular">
+                          
+                        <PiImageSquare className="text-2xl" />
+                        </IconButton>                        
+                </button>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {formatDate(aprendizData.registry_date)}
+                </Typography>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {formatDate(aprendizData.finish_date)}
+                </Typography>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                 
+                >
+                   {aprendizData.vehicle_0.marca}
+                  </Typography>
+               </td> 
+               <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                 
+                >
+                   {aprendizData.vehicle_0.modelo}
+                  </Typography>
+               </td> 
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {aprendizData.vehicle_0.placa}
+                  </Typography>
+                </td>
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {aprendizData.vehicle_0.color}
+                </Typography>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+                 <button  onClick={() => handleOpenModalImg(aprendizData.vehicle_0.foto )}>
+                 
+                
+                    {showModalVImg && <ImgModal img={selectedVPhotoUrl}/>}
+                    <IconButton variant="text"
+                        color="blue"
+                        size="regular">
+                          
+                        <PiImageSquare className="text-2xl" />
+                        </IconButton>  
+                </button>
+              </td>
+              <td className="border-y border-purple-300 p-4">
+              
+              <button onClick={() => handleOpenModalImg(aprendizData.vehicle_0.tarjeta_propiedad)} type="button">
+                  {showModalVImg && <ImgModal img={selectedVPhotoUrl}/>}                    
+                  <IconButton variant="text"
+                        color="blue"
+                        size="regular">
+                          
+                        <PiImageSquare className="text-2xl" />
+                        </IconButton>  
+                               
+              </button>
+              </td>
+            
+              <td className="border-y border-purple-300 p-4">
+                <Typography
+                  variant="small"
+                  color=""
+                  className="font-normal leading-none text-purple-700"
+                >
+                  {aprendizData.vehicle_0.observaciones}
+                  
+                </Typography>
+              </td>
+          
+                  
+               </tr> 
           </tbody>
         </table>
       </CardBody>
-     
+   
     </Card>
+     )}
+    </>
   );
 }

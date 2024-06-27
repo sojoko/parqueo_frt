@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { API_URL } from "../config/API_URLS.tsx";
 
 function RequestProcessModal(props) {

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal'; 
 import { API_URL } from '../config/API_URLS.tsx';
 
 function QRGenerated() {
     const [data, setData] = useState(null);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    // const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isActive, setIsActive] = useState(false);
 
     const handleToggleClass = () => {
@@ -31,7 +30,8 @@ function QRGenerated() {
 
             alert('Codigo QR generado con exito');
             setData(data);
-            setModalIsOpen(true); // Abre el modal cuando se recibe la respuesta con el código QR
+            // setModalIsOpen(true); // Abre el modal cuando se recibe la respuesta con el código QR
+       
             handleToggleClass();
         } catch (error) {
             console.error('Error:', error);
