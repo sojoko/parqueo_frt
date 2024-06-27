@@ -23,6 +23,7 @@ import { ViewTicket } from './pages/ViewTicket.jsx';
 import { CreateTicketFormView } from './pages/CreateTicketFormView.jsx';
 import { DashboardPage } from './pages/DashboardPage.jsx';
 import { UserAdministrationView} from './pages/UserAdministrationView.jsx';
+import { EditUserPage } from './pages/EditUserPage.jsx';
 
 const router = createBrowserRouter([
 
@@ -148,6 +149,16 @@ const router = createBrowserRouter([
         element: <TicketsListView />
     }
   ]
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/user-administration',
+        element: <UserAdministrationView />
+    }
+  ]
   }, 
   {
     path: '/',
@@ -178,7 +189,16 @@ const router = createBrowserRouter([
       element: <UserAdministrationView /> 
       } 
     ] 
-  }
+  },
+  { path: '/', 
+    element: <ProtectedRoute/>, 
+    children:
+      [ 
+        { path: '/edit_user',
+          element: <EditUserPage />  
+        } 
+      ] 
+    }
 
 
 ]);

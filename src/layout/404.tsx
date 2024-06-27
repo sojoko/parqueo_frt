@@ -1,11 +1,8 @@
 import React from 'react'; // Import the 'React' module
-import { Header } from "../components/Header";
-import { NavBar } from "../components/NavBar";
 
-
-interface LoggedHomeProps {
-    children: React.ReactNode;
-}
+// interface LoggedHomeProps {
+//     children: React.ReactNode;
+// }
 
 function PageNotFound (){
     return (

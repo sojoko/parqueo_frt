@@ -11,16 +11,16 @@ import { API_URL } from "../config/API_URLS.tsx";
         photo: '',
         finish_date: ''
     });
-    const [formVehicleDataBici, setFormVehicleDataBici] = useState({
-      brand: '',
-      serial_number: '',
-      type: '',
-      color: '',
-      observation: '',
-      photo: '',
-      tarjeta_propiedad: ''
+  //   const [formVehicleDataBici, setFormVehicleDataBici] = useState({
+  //     brand: '',
+  //     serial_number: '',
+  //     type: '',
+  //     color: '',
+  //     observation: '',
+  //     photo: '',
+  //     tarjeta_propiedad: ''
 
-  });
+  // });
     const [formVehicleDataMoto, setFormVehicleDataMoto] = useState({
       marca: '',
       placa: '',
@@ -31,8 +31,6 @@ import { API_URL } from "../config/API_URLS.tsx";
       tarjeta_propiedad: '',
 
   });
-
-
 
     const [continueButton, setContinueButton] = useState(false);
     const [vehicleType, setVehicleType] = useState("");

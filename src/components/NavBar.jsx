@@ -11,8 +11,8 @@ import { HiOutlineQrCode } from "react-icons/hi2";
 
 function NavBar() {
 
-    const roll = localStorage.getItem('userRoll')
-    console.log(roll)
+    const roll = parseInt(localStorage.getItem('userRoll'))
+
 
     const location = useLocation();
     const [isActiveHome, setIsActiveHome] = useState(false);
@@ -56,7 +56,7 @@ function NavBar() {
                      </a>
                     </div>
                 <div className="flex-1 group ">
-                {roll == 2 && (
+                {roll === 2 && (
                     <a href="/qr-generator" className={`${isActiveQR ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                     <span className="block px-1 pt-1">
                         <div className="flex justify-center text-3xl lg:text-5xl"><HiOutlineQrCode /></div>
@@ -65,7 +65,7 @@ function NavBar() {
                     </span>
                     </a>
                 )}
-                {roll == 1 && (
+                {roll === 1 && (
                     <a href="/users-administration" className={`${isActiveUsers || isActiveUsersList || isActiveCreateUserEmployee || isActiveAprendizRequest ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                     <span className="block px-1 pt-1">
                         <div className="flex justify-center text-3xl lg:text-5xl"><HiOutlineUsers /></div>

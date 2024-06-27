@@ -15,7 +15,7 @@ function SetPassword() {
     
     const handleSubmit =  async (event) => {
         event.preventDefault();
-        const document = documentSender;
+        // const document = documentSender;
 
         try {
             const response = await fetch(`${API_URL}/create_user`, {
