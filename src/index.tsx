@@ -18,7 +18,7 @@ import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
 import { SetPasswordView } from './pages/SetPasswordView.jsx';
 import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
 import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
-
+import { UserAdministrationView } from './pages/UserAdministrationView.jsx';
 import { EditUserPage } from './pages/EditUserPage.jsx';
 
 const router = createBrowserRouter([
@@ -41,7 +41,6 @@ const router = createBrowserRouter([
       element: <ProtectedRoute/>,
       children:[
           {
-
             path: '/users-administration',
             element: <UserAdminSection/>
         }
@@ -132,19 +131,24 @@ const router = createBrowserRouter([
     }
   ]
   },  
-
-
-]);
-
-const root = ReactDOM.createRoot(document.getElementById('root')!);
-root.render(
-  <React.StrictMode>     
-    <AuthProvider>
-      <RouterProvider router={router} />   
-    </AuthProvider>
-  </React.StrictMode>
-);
-
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/edit_user',
+        element: <EditUserPage />
+    }
+  ]
+  } ]); 
+  const root = ReactDOM.createRoot(document.getElementById('root')!);
+  root.render(
+    <React.StrictMode>     
+      <AuthProvider>
+        <RouterProvider router={router} />   
+      </AuthProvider>
+    </React.StrictMode>
+  );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
