@@ -1,6 +1,4 @@
-import { Header } from "../components/Header";
-import { NavBar } from "../components/NavBar";
-import { Footer } from "../components/Footer";
+import { LoggedLayout } from "../layout/LoggedLayout.tsx";
 import { Dashboard } from "../components/Dashboard";
 import { DashboardGeneral } from "../components/DashboardGeneral";
 import { DashboardBici } from "../components/DashboardBici";
@@ -11,10 +9,10 @@ function DashboardPage (){
     const roll = localStorage.getItem('userRoll')
 
     return (
-        <div>
-            <Header/>
+        
+        <LoggedLayout>
             <div className="py-12 bg-gray-200 flex flex-col items-center justify-center w-full">
-                {roll == 1 && (
+                {(roll == 1 || roll == 3) && (
                  <>
                     <div className="w-4/5 rounded-md shadow-md mb-4">
                         <Dashboard/>
@@ -31,9 +29,8 @@ function DashboardPage (){
                     <DashboardMoto/>
                 </div>
             </div>
-            <NavBar/>
-            <Footer/>
-        </div>
+            </LoggedLayout>
+       
     )
 }
 

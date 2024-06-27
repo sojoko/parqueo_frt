@@ -1,29 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { API_URL } from "../config/API_URLS.tsx";
 
 
 
 export function ViewTickets() {
 
-    const ticket_id = '2';
     const [loading, setLoading] = useState(false);   
     const [ticketData, setTicketData] = useState(null);
     const [documentAprendiz, setDocumentAprendiz] = useState("");
     const [aprendizData, setAprendizData] = useState(null);
+    const { ticketId } = useParams();
+    const roll = localStorage.getItem('userRoll');
 
 
     useEffect(() => {
         handleLoad();
-        handleLoadUser();
-    }, []); 
+
+    }, [ticketId]); 
+
+    useEffect(() => {
+        if(documentAprendiz){
+            handleLoadUser();
+        }
+    }, [documentAprendiz]); 
 
     async function handleLoad() {
         try {
             setLoading(true);
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/Ticket/id/1`, {
+            const response = await fetch(`${API_URL}/Ticket/id/${ticketId}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
@@ -33,9 +39,7 @@ export function ViewTickets() {
                 throw new Error('Error en la solicitud');
             }
             const data = await response.json();
-            // console.log('Respuesta de la API:', data);
             setTicketData(data);    
-            setLoading(false); 
             setDocumentAprendiz(data.document);
     
         } catch (error) {
@@ -45,10 +49,10 @@ export function ViewTickets() {
 
     async function handleLoadUser() {
 
-        // console.log(documentAprendiz)
+        console.log("Documento " + documentAprendiz)
         try {
             setLoading(true);
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/aprendices/1683822`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1/aprendices/${documentAprendiz}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,7 +94,7 @@ export function ViewTickets() {
         console.log('data enviada' + formData)
    
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/v1/ticket-response/1', {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1/ticket-response/${ticketId}`, {
                 method: 'put',
                 body: JSON.stringify(formData),
                 headers: {
@@ -132,7 +136,7 @@ export function ViewTickets() {
         <div className="py-12 bg-gray-200">
             <div className="grid sm:grid-cols-2 items-center gap-16 p-8 mx-auto max-w-4xl bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">                
                 <div>                   
-                    <h1 className="text-2xl font-extrabold">Incidencia de Juan Perez</h1>
+                    <h1 className="text-2xl font-extrabold">Incidencia de {aprendizData.name} {aprendizData.last_name}</h1>
                     <p className="text-sm mt-3">{ticketData.description}</p>
                     <div className="mt-8">                        
                         <h2 className="text-lg font-extrabold">Información adicional</h2>
@@ -180,6 +184,7 @@ export function ViewTickets() {
                 </div>
                 <div className='space-y-4'>
                     <img className="h-52 md:h-52 ml-8" src='https://thumbs.dreamstime.com/z/ca%C3%ADda-de-motocicleta-en-zona-urbana-21218976.jpg?ct=jpeg'/>
+                    {roll === 1 &&(
                     <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
                         <input 
                         className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" 
@@ -205,7 +210,7 @@ export function ViewTickets() {
                         type="submit" 
                         className="text-white bg-amber-500 hover:bg-blue-600 font-semibold rounded-md text-sm px-4 py-2.5 w-full">Enviar</button>
                     </form>
-
+                    )}
                 </div>
             </div>
         </div>

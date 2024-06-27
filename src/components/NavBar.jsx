@@ -29,7 +29,7 @@ function NavBar() {
         setIsActiveUsers(location.pathname === '/users-administration');
         setIsActiveUsersList(location.pathname === '/users-administration-list');
         setIsActiveQR(location.pathname === '/qr-generator');
-        setIsActiveParking(location.pathname === '/parking');
+        setIsActiveParking(location.pathname === '/dashboard');
         setIsActiveTickets(location.pathname === '/tickets');
         setIsActiveCreateUserEmployee(location.pathname === '/user-registration-employees');
         setIsActiveAprendizRequest(location.pathname === '/user-registration-request');
@@ -76,7 +76,7 @@ function NavBar() {
                 )}
                 </div>
                 <div className="flex-1 group">
-                    <a href="#" className={`${isActiveParking ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
+                    <a href="/dashboard" className={`${isActiveParking ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                         <span className="block px-1 pt-1">
                             <div className="flex justify-center text-3xl lg:text-5xl"><PiMotorcycleFill /></div>
                             <span className="block text-sm font-bold pb-1 lg:text-2xl">Parking</span>

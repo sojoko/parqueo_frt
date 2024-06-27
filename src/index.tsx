@@ -18,7 +18,11 @@ import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
 import { SetPasswordView } from './pages/SetPasswordView.jsx';
 import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
 import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
-import { UserAdministrationView } from './pages/UserAdministrationView.jsx';
+import { TicketsListView } from './pages/TicketsListView.jsx';
+import { ViewTicket } from './pages/ViewTicket.jsx';
+import { CreateTicketFormView } from './pages/CreateTicketFormView.jsx';
+import { DashboardPage } from './pages/DashboardPage.jsx';
+import { UserAdministrationView} from './pages/UserAdministrationView.jsx';
 import { EditUserPage } from './pages/EditUserPage.jsx';
 
 const router = createBrowserRouter([
@@ -36,6 +40,16 @@ const router = createBrowserRouter([
       path: '/estado-solicitud-registro',
       element: <RegistrationStatusFormView />
   }, 
+  {
+      path: '/',
+      element: <ProtectedRoute/>,
+      children:[
+          {
+            path: '/dashboard',
+            element: <DashboardPage />
+        }
+      ]
+  },
   {
       path: '/',
       element: <ProtectedRoute/>,
@@ -97,9 +111,14 @@ const router = createBrowserRouter([
   ]
   },  
   {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
         path: '/set-password',
         element: <SetPasswordView />
-  
+    }
+  ]
   },  
   {
     path: '/',
@@ -126,29 +145,73 @@ const router = createBrowserRouter([
     element: <ProtectedRoute/>,
     children:[
       {
-        path: '/user-administration',
-        element: <UserAdministrationView />
+        path: '/TicketsTable',
+        element: <TicketsListView />
     }
   ]
-  },  
+  },
   {
     path: '/',
     element: <ProtectedRoute/>,
     children:[
       {
-        path: '/edit_user',
-        element: <EditUserPage />
+        path: '/user-administration',
+        element: <UserAdministrationView />
     }
   ]
-  } ]); 
-  const root = ReactDOM.createRoot(document.getElementById('root')!);
-  root.render(
-    <React.StrictMode>     
-      <AuthProvider>
-        <RouterProvider router={router} />   
-      </AuthProvider>
-    </React.StrictMode>
-  );
+  }, 
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/Ticket/id/:ticketId',
+        element: <ViewTicket />
+    }
+  ]
+  }, 
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/CreateTicket',
+        element: <CreateTicketFormView />
+      }
+    ]
+  },
+
+  { path: '/', 
+  element: <ProtectedRoute/>, 
+  children:
+    [ 
+      { path: '/user-administration', 
+      element: <UserAdministrationView /> 
+      } 
+    ] 
+  },
+  { path: '/', 
+    element: <ProtectedRoute/>, 
+    children:
+      [ 
+        { path: '/edit_user',
+          element: <EditUserPage />  
+        } 
+      ] 
+    }
+
+
+]);
+
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(
+  <React.StrictMode>     
+    <AuthProvider>
+      <RouterProvider router={router} />   
+    </AuthProvider>
+  </React.StrictMode>
+);
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
