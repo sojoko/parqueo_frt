@@ -18,7 +18,11 @@ import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
 import { SetPasswordView } from './pages/SetPasswordView.jsx';
 import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
 import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
-
+import { TicketsListView } from './pages/TicketsListView.jsx';
+import { ViewTicket } from './pages/ViewTicket.jsx';
+import { CreateTicketFormView } from './pages/CreateTicketFormView.jsx';
+import { DashboardPage } from './pages/DashboardPage.jsx';
+import { UserAdministrationView} from './pages/UserAdministrationView.jsx';
 
 const router = createBrowserRouter([
 
@@ -40,7 +44,16 @@ const router = createBrowserRouter([
       element: <ProtectedRoute/>,
       children:[
           {
-
+            path: '/dashboard',
+            element: <DashboardPage />
+        }
+      ]
+  },
+  {
+      path: '/',
+      element: <ProtectedRoute/>,
+      children:[
+          {
             path: '/users-administration',
             element: <UserAdminSection/>
         }
@@ -97,9 +110,14 @@ const router = createBrowserRouter([
   ]
   },  
   {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
         path: '/set-password',
         element: <SetPasswordView />
-  
+    }
+  ]
   },  
   {
     path: '/',
@@ -126,7 +144,41 @@ const router = createBrowserRouter([
     element: <ProtectedRoute/>,
     children:[
       {
+        path: '/TicketsTable',
+        element: <TicketsListView />
+    }
+  ]
+  }, 
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/Ticket/id/:ticketId',
+        element: <ViewTicket />
+    }
+  ]
+  }, 
+  {
+    path: '/',
+    element: <ProtectedRoute/>,
+    children:[
+      {
+        path: '/CreateTicket',
+        element: <CreateTicketFormView />
+      }
+    ]
+  },
 
+  { path: '/', 
+  element: <ProtectedRoute/>, 
+  children:
+    [ 
+      { path: '/user-administration', 
+      element: <UserAdministrationView /> 
+      } 
+    ] 
+  }
 
 
 ]);

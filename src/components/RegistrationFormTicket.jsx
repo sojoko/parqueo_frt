@@ -1,8 +1,9 @@
  import React, { useState } from 'react';
 
- 
-
   const RegistrationFormTicket = () => {
+    const [vehicle_type, setVehicleType] = useState("");
+    const [placa, setPlaca] = useState("");
+    const [numero_marco, setNumero_marco] = useState("");
     const document = localStorage.getItem('userDocument');
     const [formData, setFormData] = useState({       
         document: document,
@@ -14,6 +15,22 @@
         photo: '',
         status: '1'
     });
+
+    // useEffect(() => {
+    //   setFormData={       
+    //     document: document,
+    //     vehicle_type: vehicle_type,
+    //     placa: placa,
+    //     numero_marco:'',
+    //     date: '',
+    //     description: '',
+    //     photo: '',
+    //     status: '1'
+    // };
+      
+    //   cosole.log()
+    // }, [placa]); 
+  
     const [errors, setErrors] = useState({});    
 
     const handleInputChange = (e) => {
@@ -48,7 +65,7 @@
       }
     };
 
-    const [vehicle_type, setVehicleType] = useState("");
+    
 
     const handleVehicleTypeChange = (event) => {
       setVehicleType(event.target.value);
@@ -74,8 +91,7 @@
               name ="vehicle_type"
               //required
               className= "bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            
-              onChange={handleVehicleTypeChange}
-              value={formData.vehicle_type}
+              onChange={handleInputChange}
               >
               <option Value="Ninguno">Ninguno</option>
               <option value="Motocicleta">Motocicleta</option>
@@ -83,7 +99,7 @@
             </select>
           </div>
 
-          {vehicle_type === "Motocicleta" && (
+          {formData.vehicle_type === "Motocicleta" && (
             <div className="mb-4">
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
@@ -97,12 +113,13 @@
                 id="placa"
                 name="placa"
                 placeholder="ABC-12A"
-                // value={formData.placa}
+                value={formData.placa}
+                onChange={handleInputChange}
                 //required
               />
             </div>
           )}       
-          {vehicle_type === "Bicicleta" && (
+          {formData.vehicle_type === "Bicicleta" && (
             <div className="mb-4">
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
@@ -116,7 +133,8 @@
                 id="numero_marco"
                 name="numero_marco"
                 placeholder="SN00AA1234BB"
-                // value={formData.numero_marco}
+                value={formData.numero_marco}
+                onChange={handleInputChange}
                 //required
               />
             </div>

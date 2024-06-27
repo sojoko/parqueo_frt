@@ -1,16 +1,19 @@
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { NavBar } from "../components/NavBar";
+import { LoggedLayout } from "../layout/LoggedLayout.tsx";
 import { TicketsTable } from "../components/TicketsTable";
+import { ApredizTicketsTable } from "../components/ApredizTicketsTable";
+
 
 function TicketsListView (){
+    const roll = localStorage.getItem('userRoll');
     return (
-        <div>
-            <Header/>
-            <TicketsTable/>
-            <NavBar/>
-            <Footer/>
-        </div>
+        <LoggedLayout>        
+            {(roll == 2 || roll == 3) &&(
+                <ApredizTicketsTable/>
+            )}
+            {roll == 1 &&(
+                <TicketsTable/>
+            )}
+        </LoggedLayout>
     )
 }
 
