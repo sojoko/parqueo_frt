@@ -85,7 +85,7 @@ function NavBar() {
                     </a>
                 </div>
                 <div className="flex-1 group">
-                    <a href="#" className={`${isActiveParking ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
+                    <a href="/TicketsTable" className={`${isActiveParking ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                         <span className="block px-1 pt-1">
                             <div className="flex justify-center text-3xl lg:text-5xl"><PiEnvelopeSimple /></div>
                             <span className="block text-sm font-bold pb-1 lg:text-2xl">Tickets</span>

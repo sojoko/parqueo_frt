@@ -18,7 +18,7 @@ import { RegistrationRequestList } from './pages/RegistrationRequestList.jsx';
 import { SetPasswordView } from './pages/SetPasswordView.jsx';
 import { AprendizDataTabView } from './pages/AprendizDataTabList.jsx';
 import { AprendizCardInfoView } from './pages/AprendizCardInfoView.jsx';
-import { UserAdministrationView } from './pages/UserAdministrationView.jsx';
+
 import { EditUserPage } from './pages/EditUserPage.jsx';
 
 const router = createBrowserRouter([
@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       element: <ProtectedRoute/>,
       children:[
           {
+
             path: '/users-administration',
             element: <UserAdminSection/>
         }
@@ -128,16 +129,6 @@ const router = createBrowserRouter([
       {
         path: '/user-administration',
         element: <UserAdministrationView />
-    }
-  ]
-  },  
-  {
-    path: '/',
-    element: <ProtectedRoute/>,
-    children:[
-      {
-        path: '/edit_user',
-        element: <EditUserPage />
     }
   ]
   },  
