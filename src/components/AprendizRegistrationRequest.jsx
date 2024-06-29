@@ -140,7 +140,7 @@ useEffect(() => {
   return (
     <> {loading && <div className="w-100">Cargando...</div>}
     {filteredRows && !loading && (
-    <Card className="h-full w-full">
+    <Card className="h-full w-full mt-12">
       <CardHeader floated={false} shadow={false} className="rounded-none ">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row ">
         <Tabs value={selectedTab} className="w-full md:w-max">
@@ -164,7 +164,7 @@ useEffect(() => {
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="overflow-scroll h-[28rem] px-0 lg:h-[32rem]">
         <table className="mt-2 w-full min-w-max table-auto text-left">
           <thead>
             <tr>

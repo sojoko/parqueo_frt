@@ -11,12 +11,12 @@ function DashboardPage (){
     return (
         
         <LoggedLayout>
-            <div className="py-12 bg-gray-200 flex flex-col items-center justify-center w-full">
+            <div className="my-12 bg-gray-200 flex flex-col items-center justify-center w-full ">
                 {(roll == 1 || roll == 3) && (
                  <>
-                    <div className="w-4/5 rounded-md shadow-md mb-4">
+                    {/* <div className="w-4/5 rounded-md shadow-md mb-4">
                         <Dashboard/>
-                    </div>
+                    </div> */}
                     <div className="w-4/5 rounded-md shadow-md mb-4">
                         <DashboardGeneral/>
                     </div>
@@ -25,7 +25,7 @@ function DashboardPage (){
                 <div className="w-4/5 rounded-md shadow-md mb-4">
                     <DashboardBici/>
                 </div>
-                <div className="w-4/5 rounded-md shadow-md">
+                <div className="w-4/5 rounded-md">
                     <DashboardMoto/>
                 </div>
             </div>

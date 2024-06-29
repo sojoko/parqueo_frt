@@ -9,11 +9,19 @@ interface LoggedHomeProps {
 
 function LoggedLayout ({children}: LoggedHomeProps){
     return (
-        <div className="min-h-screen flex flex-col justify-between w-full dark:bg-gray-900 bg-gray-200" >
-            <Header/>
-            <main className='flex items-center justify-center w-full '> {children}</main>
-            <NavBar/>
-        </div>
+        <div className="min-h-screen flex flex-col w-full dark:bg-gray-900 bg-gray-200">
+        <header className="sticky top-0 z-10">
+          <Header />
+        </header>
+        <main className="flex-grow overflow-auto -mt-4 ">
+          <div className="flex-grow flex items-center justify-center w-full min-h-[45rem]">
+            {children}
+          </div>
+        </main>
+        <footer className="sticky bottom-0 z-10">
+          <NavBar />
+        </footer>
+      </div>
     )
 }
 

@@ -111,14 +111,12 @@ const router = createBrowserRouter([
   ]
   },  
   {
-    path: '/',
-    element: <ProtectedRoute/>,
-    children:[
-      {
+    
+      
         path: '/set-password',
         element: <SetPasswordView />
-    }
-  ]
+    
+
   },  
   {
     path: '/',

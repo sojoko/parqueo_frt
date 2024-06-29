@@ -20,17 +20,32 @@ export function AprendizCardInfo() {
     const [aprendizData, setAprendizData] = useState(null);
     const [vehicleData, setvehicleData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [parkingData, setParkingData] = useState(null);
+    const [parkingStatus, setParkingStatus] = useState(null);
+    const [existParking, setExistParking] = useState(null);
 
     function handleDocument() {
      setDocumentSender(aprendizData.document);
     }               
 
     useEffect(() => {
-        
+        if (aprendizData) {
+            return;
+        }
         handleLoad();
         handleLoad2();
+        handleLoadParking();
+       
         
     }, []); 
+
+    useEffect(() => {
+        if (aprendizData && existParking === false ) {
+            handleSetParkingStatus();
+        }
+      
+        
+    }, [parkingData]); 
 
     async function handleLoad() {
         try {
@@ -54,7 +69,7 @@ export function AprendizCardInfo() {
     }
     async function handleLoad2() {
         try {
-            setLoading(true);
+            // setLoading(true);
             const response = await fetch(`${API_URL}/moto/${document}`, {
                 method: 'get',
                 headers: {
@@ -74,6 +89,95 @@ export function AprendizCardInfo() {
             setLoading(false);
         }
     }
+
+    async function handleLoadParking() {
+        try {
+            
+            const response = await fetch(`${API_URL}/parking-by-document/${document}`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            const data = await response.json();
+            console.log('Respuesta de la API:', data);
+            setParkingData(data);   
+            if (data) {
+                setParkingStatus(data.is_in_parking);
+            } else {
+                setParkingStatus(0);
+                setExistParking(false);
+            }
+            
+        } catch (error) {
+            console.error('Error:', error);
+        } 
+         finally {
+            setLoading(false);
+        }
+    }
+   
+
+    async function handleSetParkingStatus() {
+        
+        try {         
+            const response = await fetch(`${API_URL}/parking-registration`, {
+                method: 'post',
+                body: JSON.stringify({ "user_document": document, "is_in_parking": 0, "vehicle_type": vehicleData.vehicle_type, "created_at": "", "updated_at": "", "deleted_at": "" }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            const data = await response.json();
+            console.log('Respuesta de la API:', data);
+            alert('Registro de parqueo exitoso');
+            window.location.reload();
+           
+        } catch (error) {
+            console.error('Error:', error);
+        } 
+         
+    }
+
+
+    async function handleChangeParkingStatus() {
+        
+        let parkingStatusForSent = null;
+        if (parkingStatus === 1) {
+            parkingStatusForSent = 0;
+
+        } else if (parkingStatus === 0) {
+            parkingStatusForSent = 1
+        }
+
+        try {         
+            const response = await fetch(`${API_URL}/parking-registration/${document}`, {
+                method: 'put',
+                body: JSON.stringify({ "user_document": document, "is_in_parking": parkingStatusForSent, "created_at": "", "updated_at": "", "deleted_at": "" }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            const data = await response.json();
+            console.log('Respuesta de la API:', data);
+            alert('Registro de parqueo exitoso');
+            window.location.reload();
+           
+        } catch (error) {
+            console.error('Error:', error);
+        } 
+         
+    }
+
 
     if (documentSender) {
         return <Navigate to={route} />;
@@ -110,8 +214,8 @@ export function AprendizCardInfo() {
             </div>
           </div>}
             {aprendizData && vehicleData && (
-                <Card className="w-96">
-                    <CardHeader floated={false} className="h-100">
+                <Card className="w-96 mt-6">
+                    <CardHeader floated={false} className="h-80">
                         <img src={aprendizData.photo} alt="profile-picture" />
                     </CardHeader>
                     <CardBody className="text-center">
@@ -153,10 +257,21 @@ export function AprendizCardInfo() {
                         </Typography>
 
                         <button onClick={handleDocument}>
-                            <Typography color="blue-gray" variant="h6" className="font-medium mt-6 text-purple-600" textGradient>
+                            <Typography color="blue-gray" variant="h6" className="font-medium mt-2 text-amber-600 hover:text-purple-600 " textGradient>
                                 Ver todos los datos
                             </Typography>
                         </button>
+                        <div>
+                            <button onClick={handleChangeParkingStatus}  className="border-amber-600 rounded-md border-2 p-2 mt-2 hover:border-purple-500" >
+                                <Typography color="blue-gray" variant="h6" className={
+                                   parkingData && parkingData.is_in_parking === 1
+                                    ? "text-red-500" 
+                                    : "text-green-500" // Clase de Tailwind CSS para color verde
+                                } textGradient>
+                                    {parkingData && parkingData.is_in_parking === 1 ? "Registrar salida" : "Registrar entrada"}
+                                </Typography>
+                            </button>
+                        </div>
 
                     </CardBody>
                 </Card>
