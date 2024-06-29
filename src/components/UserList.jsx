@@ -72,7 +72,7 @@ export function UserList() {
     } finally {
       setLoading(false);
     }
-  }, [pageValue, personData]);
+  }, );
 
   useEffect(() => {
     if (!hasLoadedData) {
