@@ -72,7 +72,7 @@ export function AprendizDataTab() {
       setLoading(false);
       console.log(aprendizData);
     }
-  }, []);
+  }, [documentByParams, aprendizData]);
 
   
   // const handleOpenModal = (document) => {
@@ -107,7 +107,7 @@ export function AprendizDataTab() {
     if  (!aprendizData){
       handleLoad();
     }
-  }, [handleLoad]);
+  }, [handleLoad, aprendizData]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);

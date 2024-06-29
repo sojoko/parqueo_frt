@@ -87,14 +87,13 @@ const options = {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [parkingData]);
 
   useEffect(() => {
     if (parkingData === false) {
       handleLoad();
     }
-    
-  }, [handleLoad]);
+  }, [handleLoad, parkingData]);
 
   return (
     <>  {loading &&  <div class="text-center">

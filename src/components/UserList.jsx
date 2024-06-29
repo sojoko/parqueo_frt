@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { API_URL } from "../config/API_URLS.tsx";
 import { useEffect } from "react";
@@ -51,7 +51,7 @@ export function UserList() {
   if (rollByLocal === 3){
     TABLE_HEAD = ["Nombre", "Roll", "Fecha de registro"];
   }
-  async function handleLoad() {
+  const handleLoad = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`${API_URL}/all-persons?page=${pageValue}&per_page=3`, {
@@ -72,20 +72,20 @@ export function UserList() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [pageValue, personData]);
 
   useEffect(() => {
     if (!hasLoadedData) {
       handleLoad();
       setHasLoadedData(true);
     }
-  }, [])
+  }, [handleLoad, hasLoadedData])
 
   useEffect(() => {
-    if (hasLoadedData) {
+    if (hasLoadedData && !personData) {
       handleLoad();
     }
-  }, [pageValue]);
+  }, [pageValue, handleLoad, hasLoadedData]);
 
   const handleTabChange = (event, newValue) => {
     console.log('Nuevo valor de tab:', newValue);
@@ -112,7 +112,7 @@ export function UserList() {
     };
   };
     fetchDataAndFilter(); 
-  }, [selectedTab, searchTerm, hasLoadedData]);
+  }, [selectedTab, searchTerm, hasLoadedData, personData]);
   
 
   function formatDate(dateString) {

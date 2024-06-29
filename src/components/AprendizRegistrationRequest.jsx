@@ -92,6 +92,8 @@ const handleOpenModalVImg = (photoUrl) => {
   setSelectedVPhotoUrl(photoUrl);
 }
 
+console.log(handleOpenModalVImg)
+
 const handleTabChange = (event, newValue) => {
     console.log('Nuevo valor de tab:', newValue);
     setSelectedTab(newValue);  
@@ -124,7 +126,7 @@ useEffect(() => {
   };
 };
   fetchDataAndFilter(); 
-}, [selectedTab, searchTerm, hasLoadedData]);
+}, [selectedTab, searchTerm, hasLoadedData], aprendizData);
 
 
   function formatDate(dateString) {
@@ -222,7 +224,7 @@ useEffect(() => {
                           variant="ghost"
                           size="sm"
                           value={state_id === 2 ? "Aceptado" : state_id === 3 ? "Rechazado" : "Pendiente"}
-                          color={state_id === 2 ? "green" : state_id == 3 ? "red" : "orange"}
+                          color={state_id === 2 ? "green" : state_id === 3 ? "red" : "orange"}
                         />
                       </div>
                     </td>

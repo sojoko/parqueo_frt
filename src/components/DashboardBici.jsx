@@ -90,13 +90,13 @@ const options = {
     finally {
       setLoading(false);
    }
-  }, []);
+  }, [parkingData]);
 
   useEffect(() => {
     if (parkingData === false) {
       handleLoad();
     }
-  }, [handleLoad]);
+  }, [handleLoad, parkingData]);
 
   return (
 

@@ -194,7 +194,7 @@ export function AprendizCardInfo() {
             {aprendizData && vehicleData && (
                 <Card className="w-96 mt-6">
                     <CardHeader floated={false} className="h-80">
-                        <img src={aprendizData.photo} alt="profile-picture" />
+                        <img src={aprendizData.photo} alt="profile" />
                     </CardHeader>
                     <CardBody className="text-center">
                         <Typography variant="h4" color="blue-gray" className="mb-2">

@@ -169,7 +169,7 @@ export function ViewTickets() {
                     </div>                    
                 </div>
                 <div className='space-y-4'>
-                    <img className="h-52 md:h-52 ml-8" src='https://thumbs.dreamstime.com/z/ca%C3%ADda-de-motocicleta-en-zona-urbana-21218976.jpg?ct=jpeg'/>
+                    <img className="h-52 md:h-52 ml-8" alt='icon' src='https://thumbs.dreamstime.com/z/ca%C3%ADda-de-motocicleta-en-zona-urbana-21218976.jpg?ct=jpeg'/>
                     {roll === 1 && (
                     <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
                         <input 
