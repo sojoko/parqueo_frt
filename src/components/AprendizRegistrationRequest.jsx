@@ -126,7 +126,7 @@ useEffect(() => {
   };
 };
   fetchDataAndFilter(); 
-}, [selectedTab, searchTerm, hasLoadedData], aprendizData);
+}, [selectedTab, searchTerm, hasLoadedData, aprendizData]);
 
 
   function formatDate(dateString) {
