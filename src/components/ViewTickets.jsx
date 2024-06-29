@@ -52,7 +52,7 @@ export function ViewTickets() {
         console.log("Documento " + documentAprendiz)
         try {
             setLoading(true);
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/aprendices/${documentAprendiz}`, {
+            const response = await fetch(`${API_URL}/aprendices/${documentAprendiz}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ export function ViewTickets() {
         console.log('data enviada' + formData)
    
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/ticket-response/${ticketId}`, {
+            const response = await fetch(`${API_URL}/ticket-response/${ticketId}`, {
                 method: 'put',
                 body: JSON.stringify(formData),
                 headers: {
