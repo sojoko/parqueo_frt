@@ -1,13 +1,12 @@
 import { ViewTickets } from "../components/ViewTickets";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
+import { LoggedLayout } from "../layout/LoggedLayout.tsx";
 
 function ViewTicket (){
     return (
         <div>
-            <Header/>
-            <ViewTickets/>
-            <Footer/>
+            <LoggedLayout> 
+                <ViewTickets/>
+            </LoggedLayout>
         </div>
     )
 }

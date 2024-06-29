@@ -6,7 +6,7 @@ import { DashboardMoto } from "../components/DashboardMoto";
 
 function DashboardPage (){
 
-    const roll = localStorage.getItem('userRoll')
+    const roll = parseInt(localStorage.getItem('userRoll'))
 
     return (
         

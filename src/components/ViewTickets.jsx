@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
-// import { Navigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { API_URL } from "../config/API_URLS.tsx";
 
-
-
 export function ViewTickets() {
-
     const [loading, setLoading] = useState(false);   
     const [ticketData, setTicketData] = useState(null);
     const [documentAprendiz, setDocumentAprendiz] = useState("");
@@ -14,19 +10,7 @@ export function ViewTickets() {
     const { ticketId } = useParams();
     const roll = localStorage.getItem('userRoll');
 
-
-    useEffect(() => {
-        handleLoad();
-
-    }, [ticketId]); 
-
-    useEffect(() => {
-        if(documentAprendiz){
-            handleLoadUser();
-        }
-    }, [documentAprendiz]); 
-
-    async function handleLoad() {
+    const handleLoad = useCallback(async () => {
         try {
             setLoading(true);
             const response = await fetch(`${API_URL}/Ticket/id/${ticketId}`, {
@@ -41,36 +25,42 @@ export function ViewTickets() {
             const data = await response.json();
             setTicketData(data);    
             setDocumentAprendiz(data.document);
-    
         } catch (error) {
             console.error('Error:', error);
-        }        
-    }
+        }
+    }, [ticketId]);
 
-    async function handleLoadUser() {
-
-        console.log("Documento " + documentAprendiz)
-        try {
-            setLoading(true);
-            const response = await fetch(`${API_URL}/aprendices/${documentAprendiz}`, {
-                method: 'get',
-                headers: {
-                    'Content-Type': 'application/json'
+    const handleLoadUser = useCallback(async () => {
+        if (documentAprendiz) {
+            try {
+                setLoading(true);
+                const response = await fetch(`${API_URL}/aprendices/${documentAprendiz}`, {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud');
                 }
-            });
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-            const data = await response.json();
-            // console.log('Respuesta de la API aprendiz:', data);
-    
-            setAprendizData(data);    
-            setLoading(false); 
-    
-        } catch (error) {
-            console.error('Error:', error);
-        }        
-    }
+                const data = await response.json();
+                setAprendizData(data);    
+                setLoading(false); 
+            } catch (error) {
+                console.error('Error:', error);
+            }        
+        }
+    }, [documentAprendiz]);
+
+    useEffect(() => {
+        handleLoad();
+    }, [handleLoad]); 
+
+    useEffect(() => {
+        if (documentAprendiz) {
+            handleLoadUser();
+        }
+    }, [documentAprendiz, handleLoadUser]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -86,12 +76,9 @@ export function ViewTickets() {
         message: ''       
     });
 
-    // const [errors, setErrors] = useState({});
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('data enviada' + formData)
-   
         try {
             const response = await fetch(`${API_URL}/ticket-response/${ticketId}`, {
                 method: 'put',
@@ -122,6 +109,7 @@ export function ViewTickets() {
         const fechaFormateada = `${dia < 10 ? '0' : ''}${dia}/${mes < 10 ? '0' : ''}${mes}/${año}`;
         return fechaFormateada;
     }
+
     return (
         <>
         {loading && 
@@ -131,7 +119,6 @@ export function ViewTickets() {
             </div>
         }
         {ticketData && aprendizData && (
-
         <div className="py-12 bg-gray-200">
             <div className="grid sm:grid-cols-2 items-center gap-16 p-8 mx-auto max-w-4xl bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]">                
                 <div>                   
@@ -183,7 +170,7 @@ export function ViewTickets() {
                 </div>
                 <div className='space-y-4'>
                     <img className="h-52 md:h-52 ml-8" src='https://thumbs.dreamstime.com/z/ca%C3%ADda-de-motocicleta-en-zona-urbana-21218976.jpg?ct=jpeg'/>
-                    {roll === 1 &&(
+                    {roll === 1 && (
                     <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
                         <input 
                         className="w-full rounded-md py-2.5 px-4 border text-sm outline-[#007bff]" 
@@ -217,4 +204,3 @@ export function ViewTickets() {
         </>
     );
 }
-

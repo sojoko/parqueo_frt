@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback  } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { API_URL } from "../config/API_URLS.tsx";
 import { useEffect } from 'react';
@@ -65,38 +65,36 @@ const options = {
   };
 
 
-  async function handleLoad() {
+  const handleLoad = useCallback(async () => {
     try {
-        setLoading(true);
-        const response = await fetch(`${API_URL}/parking-all-counter`, {
-            method: 'get',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        if (!response.ok) {
-            throw new Error('Error en la solicitud');
+      setLoading(true);
+      const response = await fetch(`${API_URL}/parking-all-counter`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json'
         }
-        const data = await response.json();
-        console.log('Respuesta de la API:', data);
-        setParkingData(data);
-        const { motocycle_in_parking, actually_motorcycle_capacity } = data;
-        updateSeries(motocycle_in_parking, actually_motorcycle_capacity);
-        
-       
+      });
+      if (!response.ok) {
+        throw new Error('Error en la solicitud');
+      }
+      const data = await response.json();
+      console.log('Respuesta de la API:', data);
+      setParkingData(data);
+      const { motocycle_in_parking, actually_motorcycle_capacity } = data;
+      updateSeries(motocycle_in_parking, actually_motorcycle_capacity);
     } catch (error) {
-        console.error('Error:', error);
-    }  finally {
+      console.error('Error:', error);
+    } finally {
       setLoading(false);
-   }
-}
+    }
+  }, []);
 
   useEffect(() => {
-   
-    handleLoad();
-  
+    if (parkingData === false) {
+      handleLoad();
+    }
     
-  }, []); 
+  }, [handleLoad]);
 
   return (
     <>  {loading &&  <div class="text-center">

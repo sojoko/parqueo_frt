@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { API_URL } from "../config/API_URLS.tsx";
 import { useEffect } from 'react';
@@ -65,7 +65,7 @@ const options = {
   };
 
 
-  async function handleLoad() {
+  const handleLoad = useCallback(async () => {
     try {
         setLoading(true);
         const response = await fetch(`${API_URL}/parking-all-counter`, {
@@ -90,14 +90,13 @@ const options = {
     finally {
       setLoading(false);
    }
-}
+  }, []);
 
   useEffect(() => {
-   
-    handleLoad();
-  
-    
-  }, []); 
+    if (parkingData === false) {
+      handleLoad();
+    }
+  }, [handleLoad]);
 
   return (
 

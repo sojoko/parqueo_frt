@@ -1,5 +1,5 @@
 import React, { useContext, createContext, useState } from "react";
-import type { AuthResponse } from "../types/types";
+// import type { AuthResponse } from "../types/types";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -14,13 +14,13 @@ const AuthContext = createContext({
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState('');
-  const [refreshToken, setRefreshToken] = useState('');
+  // const [refreshToken, setRefreshToken] = useState('');
   const [userRoll, setUserRoll] = useState(''); 
 
   function getAccessToken() {
     return accessToken;
   }
-
+  console.log(userRoll)
   async function saveUser(x) {
     return new Promise((resolve, reject) => {
       setAccessToken(x.access_token); 

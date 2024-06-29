@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useEffect } from "react";
 import { ImgModal } from "./ImgModal";
 import { API_URL } from "../config/API_URLS.tsx";
@@ -48,7 +48,7 @@ export function AprendizDataTab() {
   const [selectedVPhotoUrl, setSelectedVPhotoUrl] = useState(null);
   // const [selectedDocument, setSelectedDocument] = useState(null);
 
-  async function handleLoad() {
+  const handleLoad = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -72,8 +72,9 @@ export function AprendizDataTab() {
       setLoading(false);
       console.log(aprendizData);
     }
-  }
+  }, []);
 
+  
   // const handleOpenModal = (document) => {
   //   setShowModal(!showModal);
   //   console.log('Modal abierto');
@@ -89,6 +90,8 @@ export function AprendizDataTab() {
     setShowModalImg(!showModalVImg);
     setSelectedVPhotoUrl(photoUrl);
   };
+  
+  console.log(handleOpenModalVImg);
 
   // const handleTabChange = (event, newValue) => {
   //     console.log('Nuevo valor de tab:', newValue);
@@ -101,8 +104,10 @@ export function AprendizDataTab() {
   //   };
 
   useEffect(() => {
-    handleLoad();
-  }, []);
+    if  (!aprendizData){
+      handleLoad();
+    }
+  }, [handleLoad]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);

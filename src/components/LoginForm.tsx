@@ -73,8 +73,6 @@ function LoginForm() {
                             value = {password}
                             onChange={(e) => setPassword(e.target.value) }
                             />
-                        <a href="#"
-                            className="text-s text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">   </a>
                     </div>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center">
