@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { API_URL } from "../config/API_URLS.tsx";
 
@@ -86,8 +86,7 @@ export function ViewTickets() {
         message: ''       
     });
 
-    const [errors, setErrors] = useState({});
-    
+    // const [errors, setErrors] = useState({});
     
     const handleSubmit = async (e) => {
         e.preventDefault();

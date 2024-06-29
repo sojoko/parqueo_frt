@@ -1,9 +1,9 @@
  import React, { useState } from 'react';
 
   const RegistrationFormTicket = () => {
-    const [vehicle_type, setVehicleType] = useState("");
-    const [placa, setPlaca] = useState("");
-    const [numero_marco, setNumero_marco] = useState("");
+    // const [vehicle_type, setVehicleType] = useState("");
+    // const [placa, setPlaca] = useState("");
+    // const [numero_marco, setNumero_marco] = useState("");
     const document = localStorage.getItem('userDocument');
     const [formData, setFormData] = useState({       
         document: document,
@@ -31,7 +31,7 @@
     //   cosole.log()
     // }, [placa]); 
   
-    const [errors, setErrors] = useState({});    
+    // const [errors, setErrors] = useState({});    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -65,11 +65,10 @@
       }
     };
 
-    
 
-    const handleVehicleTypeChange = (event) => {
-      setVehicleType(event.target.value);
-    };
+    // const handleVehicleTypeChange = (event) => {
+    //   setVehicleType(event.target.value);
+    // };
 
   return (
     <div className="min-h-screen flex items-center justify-center w-full bg-gray-200 dark:bg-gray-950">

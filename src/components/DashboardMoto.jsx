@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { API_URL } from "../config/API_URLS.tsx";
 import { useEffect } from 'react';
-import { hover } from '@testing-library/user-event/dist/hover';
+
 
 export const DashboardMoto = () => {
   const [loading, setLoading] = useState(false);
@@ -57,18 +57,10 @@ const options = {
   ],
 };
 
-
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-      series: [65, 34, 10, 56],
-    }));
-  };
-
   const updateSeries = (motocycleInParking, actuallyMotorcycleCapacity) => {
     setState((prevState) => ({
-      ...prevState, // Copia el estado anterior
-      series: [motocycleInParking, actuallyMotorcycleCapacity], // Actualiza los valores de series
+      ...prevState,
+      series: [motocycleInParking, actuallyMotorcycleCapacity], 
     }));
   };
 
@@ -88,10 +80,7 @@ const options = {
         const data = await response.json();
         console.log('Respuesta de la API:', data);
         setParkingData(data);
-         // Extrae los valores específicos de data
         const { motocycle_in_parking, actually_motorcycle_capacity } = data;
-
-        // Llama a updateSeries con los valores extraídos
         updateSeries(motocycle_in_parking, actually_motorcycle_capacity);
         
        

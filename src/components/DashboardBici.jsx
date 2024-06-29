@@ -57,17 +57,10 @@ const options = {
 };
 
 
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-      series: [65, 34, 10, 56],
-    }));
-  };
-
   const updateSeries = (motocycleInParking, actuallyMotorcycleCapacity) => {
     setState((prevState) => ({
-      ...prevState, // Copia el estado anterior
-      series: [motocycleInParking, actuallyMotorcycleCapacity], // Actualiza los valores de series
+      ...prevState,
+      series: [motocycleInParking, actuallyMotorcycleCapacity],
     }));
   };
 
@@ -86,11 +79,8 @@ const options = {
         }
         const data = await response.json();
         console.log('Respuesta de la API:', data);
-        setParkingData(data);
-         // Extrae los valores específicos de data
+        setParkingData(data);    
         const { bycicle_in_parking, actually_bycicle_capacity } = data;
-
-        // Llama a updateSeries con los valores extraídos
         updateSeries(bycicle_in_parking, actually_bycicle_capacity);
         
        

@@ -1,19 +1,19 @@
 import React from 'react';
 import { useState } from 'react';
-import { AuthProvider, useAuth } from '../auth/AuthProvider.tsx';
+import {useAuth } from '../auth/AuthProvider.tsx';
 import { Navigate } from "react-router-dom";
 import { API_URL } from '../config/API_URLS.tsx';
 
 
 function LoginForm() {
-    const [inputValue, setInputValue] = useState('');
+    // const [inputValue, setInputValue] = useState('');
     const [document, setUser] = useState("");
     const [password, setPassword] = useState("");
     const auth = useAuth();
     
-    const handleChange = (event) => {
-        setInputValue(event.target.value);
-      };
+    // const handleChange = (event) => {
+    //     setInputValue(event.target.value);
+    //   };
     const handleSubmit =  async (event) => {
         event.preventDefault();
 
@@ -44,7 +44,7 @@ function LoginForm() {
       
     };
 
-    const dishablesubmit = '';
+    // const dishablesubmit = '';
 
     if (auth.isAuthenticated) {
         return <Navigate to="/home" />;

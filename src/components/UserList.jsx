@@ -81,11 +81,11 @@ export function UserList() {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (hasLoadedData) {
-  //     handleLoad();
-  //   }
-  // }, [pageValue]);
+  useEffect(() => {
+    if (hasLoadedData) {
+      handleLoad();
+    }
+  }, [pageValue]);
 
   const handleTabChange = (event, newValue) => {
     console.log('Nuevo valor de tab:', newValue);
@@ -146,10 +146,7 @@ export function UserList() {
       rollId = 2;
       navigate(`/edit_user?document=${document}&roll=${rollId}&name=${name}&last_name=${last_name}&ficha=${ficha}&finish_date=${finishDate}&email=${email}`);
     }
-  
-    
   };
-
 
   return (
     <>

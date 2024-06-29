@@ -17,7 +17,7 @@ function EditUser() {
   const [document, setDocument] = useState(documentByParams);
   const emailByParams = queryParams.get('email');
   const fichaByParams = queryParams.get('ficha');
-  const finishDateByParams = queryParams.get('finish_date');
+  // const finishDateByParams = queryParams.get('finish_date');
   
   const navigate = useNavigate();
 
@@ -33,13 +33,13 @@ function EditUser() {
           let apiURL = "";
           let bodyPre = {};
         
-          if (rollByParams == 1) {
+          if (rollByParams === 1) {
             apiURL =  `${API_URL}/admins-update/${documentByParams}`;
             bodyPre = JSON.stringify({ name, last_name, document, "registry_date": "string"})
-          } else if (rollByParams == 3) {
+          } else if (rollByParams === 3) {
             apiURL = `${API_URL}/vigilantes-update/${documentByParams}`;
             bodyPre = JSON.stringify({ name, last_name, document, "registry_date": "string"})
-          } else if (rollByParams == 2) {
+          } else if (rollByParams === 2) {
             apiURL = `${API_URL}/aprendiz-update/${documentByParams}`;
             bodyPre = JSON.stringify({ name, last_name, document, email: emailByParams, ficha: fichaByParams, "registry_date": "string"});
           }
