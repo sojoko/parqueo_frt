@@ -72,7 +72,8 @@ export function UserList() {
     } finally {
       setLoading(false);
     }
-  }, );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageValue, personData]);
 
   useEffect(() => {
     if (!hasLoadedData) {
@@ -85,6 +86,7 @@ export function UserList() {
     if (hasLoadedData && !personData) {
       handleLoad();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageValue, handleLoad, hasLoadedData]);
 
   const handleTabChange = (event, newValue) => {
