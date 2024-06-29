@@ -10,7 +10,7 @@ function ApredizTicketsTable() {
 
     useEffect(() => {
         handleLoad();
-    }, []); 
+    }, ); 
 
     async function handleLoad() {
         try {
@@ -67,19 +67,19 @@ function ApredizTicketsTable() {
                                         <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Usuario</span>
                                         {ticket.aprendiz_name}
                                     </td>
-                                    <td className="w-full lg:w-auto py-6 px-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                                    <td className="w-full lg:w-auto py-6 px-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                                         <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Descripción</span>
                                         {ticket.ticket_description}
                                     </td>
-                                    <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                                    <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                                         <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Estado</span>
                                         <span className={`rounded ${ticket.status === 1 ? 'bg-green-400' : 'bg-amber-400'} py-1 px-3 text-xs font-bold`}>{ticket.status === 1 ? "Nuevo" : "Atendido"}</span>
                                     </td>
-                                    <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                                    <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                                         <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Fecha</span>
                                         {ticket.create_date}
                                     </td>
-                                    <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                                    <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                                         <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Opciones</span>
                                         <a href={`/Ticket/id/${ticket.ticket_id}`} className="text-blue-400 hover:text-blue-600 underline">Ver</a>
                                         {/* <a href="#" className="text-blue-400 hover:text-blue-600 underline pl-6">Editar</a> */}
