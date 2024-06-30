@@ -56,7 +56,7 @@ const [selectedDocument, setSelectedDocument] = useState(null);
 async function handleLoad() {
   try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/aprendiz-statu`, {
+      const response = await fetch(`${API_URL}/aprendiz-status`, {
           method: 'get',
           headers: {
               'Content-Type': 'application/json'
@@ -102,6 +102,7 @@ const handleTabChange = (event, newValue) => {
 
 const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    setFilteredRows([]);
   };
 
   useEffect(() => {
@@ -255,9 +256,9 @@ useEffect(() => {
                     <td className={classes}>
                     <button onClick={() => handleOpenModalImg(photo)} type="button">
                         {showModalImg && <ImgModal img={selectedPhotoUrl}/>}
-                        <IconButton variant="text">
-                        <PiImageSquare className="text-lg" />
-                        </IconButton>                        
+                        <IconButton variant="text" color="blue" size="regular">
+                         <PiImageSquare className="text-2xl" />
+                        </IconButton>                   
                     </button>
                     </td> 
                     <td className={classes}>
@@ -302,9 +303,9 @@ useEffect(() => {
                         </td>
                         <td className={classes}>
                           <div className="w-max">
-                            <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
-                              {vehicle.placa}
-                            </Typography>
+                          <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                            {vehicle.placa ? vehicle.placa : (vehicle.numero_marco ? vehicle.numero_marco : 'No disponible')}
+                          </Typography>
                           </div>
                         </td>
                         <td className={classes}>
@@ -317,17 +318,17 @@ useEffect(() => {
                         <td className={classes}>
                             <button onClick={() => handleOpenModalImg(vehicle.foto)} type="button">
                                 {showModalVImg && <ImgModal img={selectedVPhotoUrl}/>}
-                                <IconButton variant="text">
-                                <PiImageSquare className="text-lg" />
-                                </IconButton>                        
+                                <IconButton variant="text" color="blue" size="regular">
+                                <PiImageSquare className="text-2xl" />
+                                </IconButton>         
                             </button>
                         </td> 
                         <td className={classes}>
                             <button onClick={() => handleOpenModalImg(vehicle.tarjeta_propiedad)} type="button">
                                 {showModalVImg && <ImgModal img={selectedVPhotoUrl}/>}
-                                <IconButton variant="text">
-                                <PiImageSquare className="text-lg" />
-                                </IconButton>                        
+                                <IconButton variant="text" color="blue" size="regular">
+                                <PiImageSquare className="text-2xl" />
+                                </IconButton>                    
                             </button>
                         </td> 
                         <td className={classes}>
@@ -339,7 +340,7 @@ useEffect(() => {
                         </td>            
                       </>
                     )}
-               
+                    {state_id === 1 && (
                     <td className={classes}>                      
                     <button onClick={() => handleOpenModal(document)} type="button" title="administrar">
                         {showModal && <RequestProcessModal document={selectedDocument} />}
@@ -347,8 +348,8 @@ useEffect(() => {
                           <PencilIcon className="h-4 w-4 text-purple-600" />
                         </IconButton>                        
                      </button>
-
                     </td>
+                 )}
                   </tr>
                 );
                   }

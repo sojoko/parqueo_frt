@@ -32,6 +32,7 @@ import { API_URL } from "../config/API_URLS.tsx";
 
   });
 
+
     const [continueButton, setContinueButton] = useState(false);
     const [vehicleType, setVehicleType] = useState("");
     const [image, setImage] = useState(null);
@@ -62,18 +63,25 @@ import { API_URL } from "../config/API_URLS.tsx";
     const handleSubmit = async (e) => {
         e.preventDefault();
         let urlAPI = ''
-        const nuevoFormVehicleDataMoto = { ...formVehicleDataMoto, user_document: formData.document };
+        let newForm1 = {}
+      
     
         if (vehicleType === 'motocicleta') {
             urlAPI = `${API_URL}/motocicleta-registration`;
-            
+            newForm1 = { ...formVehicleDataMoto, user_document: formData.document };
         }
         if (vehicleType === 'bicicleta') {
             urlAPI = `${API_URL}/bicicleta-registration`;
+            const { placa, ...rest } = formVehicleDataMoto;
+            newForm1 = {
+              numero_marco: placa,
+              ...rest,
+              user_document: formData.document
+            };
         }
         try {
             console.log('Formulario:', formData);
-            console.log('FormularioMoto:', nuevoFormVehicleDataMoto);
+            console.log('FormularioMoto:', newForm1);
             console.log('url', urlAPI);
             const response = await fetch(`${API_URL}/aprendiz-registration`,
              {
@@ -92,7 +100,7 @@ import { API_URL } from "../config/API_URLS.tsx";
             const response2 = await fetch(urlAPI ,
               {
                   method: 'post',
-                  body: JSON.stringify(nuevoFormVehicleDataMoto),
+                  body: JSON.stringify(newForm1),
                   headers: {
                       'Content-Type': 'application/json'
                   }
@@ -106,7 +114,7 @@ import { API_URL } from "../config/API_URLS.tsx";
             
         } catch (error) {
             console.error('Error:', error);
-            console.log(nuevoFormVehicleDataMoto);
+            console.log(newForm1);
             alert(`${error}`);
         }
     };
@@ -400,14 +408,25 @@ import { API_URL } from "../config/API_URLS.tsx";
             </select>
           </div>
 
-          {vehicleType === "motocicleta" && (
+          
             <div className="mb-4">
+            {vehicleType === "motocicleta" && (
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
                 htmlFor="serial_number"
               >
                 Numero de placa
               </label>
+               )}       
+              {vehicleType === "bicicleta" && (
+                 <label
+                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
+                 htmlFor="serial_number"
+               >
+                 Numero de marco
+               </label>
+
+              )}       
               <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
                 type="text"
@@ -419,27 +438,9 @@ import { API_URL } from "../config/API_URLS.tsx";
                 required
               />
             </div>
-          )}       
-          {vehicleType === "bicicleta" && (
-            <div className="mb-4">
-              <label
-                className="block text-teal-800 text-sm font-bold mb-2 text-start"
-                htmlFor="serial"
-              >
-                Numero de serial
-              </label>
-              <input
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
-                type="text"
-                id="serial"
-                name="serial"
-                placeholder="ABC1234"
-                required
-              />
-            </div>
-          )}
-
-          {vehicleType === "motocicleta" && (
+       
+  
+         
             <div className="mb-4">
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
@@ -458,26 +459,10 @@ import { API_URL } from "../config/API_URLS.tsx";
                 required
               />
             </div>
-          )}
+     
          
-          {vehicleType === "bicicleta" && (
-            <div className="mb-4">
-              <label
-                className="block text-teal-800 text-sm font-bold mb-2 text-start"
-                htmlFor="tipo"
-              >
-                Tipo
-              </label>
-              <input
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
-                type="text"
-                id="tipo"
-                name="tipo"
-                placeholder="montañera"
-                required
-              />
-            </div>
-          )}
+      
+ 
 
           <div className="mb-4">
             <label

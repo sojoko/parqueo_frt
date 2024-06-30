@@ -22,6 +22,7 @@ export function AprendizCardInfo() {
     const [parkingData, setParkingData] = useState(null);
     const [parkingStatus, setParkingStatus] = useState(null);
     const [existParking, setExistParking] = useState(false);
+    const [parkingCounter, setParkingCounter] = useState(null);
 
     const handleLoad = useCallback(async () => {
         try {
@@ -45,7 +46,7 @@ export function AprendizCardInfo() {
 
     const handleLoad2 = useCallback(async () => {
         try {
-            const response = await fetch(`${API_URL}/moto/${document}`, {
+            const response = await fetch(`${API_URL}/vehicle/${document}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,6 +64,28 @@ export function AprendizCardInfo() {
             setLoading(false);
         }
     }, [document]);
+
+    const handleLoad3 = useCallback(async () => {
+        try {
+            const response = await fetch(`${API_URL}/parking-all-counter`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            const data = await response.json();
+            console.log('Respuesta de la API:', data);
+            setParkingCounter(data);
+            
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     const handleLoadParking = useCallback(async () => {
         try {
@@ -112,9 +135,14 @@ export function AprendizCardInfo() {
             console.error('Error:', error);
         }
     }, [document, vehicleData]);
-
+    
     const handleChangeParkingStatus = useCallback(async () => {
+        console.log('Parking Counter:', parkingCounter)
         let parkingStatusForSent = parkingStatus === 1 ? 0 : 1;
+        if (parkingCounter.motocycle_in_parking >= parkingCounter.actually_motorcycle_capacity && parkingStatusForSent === 1) {
+            alert('No hay cupo disponible');
+            return;
+        } 
 
         try {
             const response = await fetch(`${API_URL}/parking-registration/${document}`, {
@@ -134,15 +162,16 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }, [document, parkingStatus]);
+    }, [document, parkingStatus, parkingCounter]);
 
     useEffect(() => {
         if (!aprendizData) {
             handleLoad();
             handleLoad2();
             handleLoadParking();
+            handleLoad3();
         }
-    }, [handleLoad, handleLoad2, handleLoadParking, aprendizData]);
+    }, [handleLoad, handleLoad2,handleLoad3, handleLoadParking, aprendizData]);
 
     useEffect(() => {
         if (aprendizData && existParking === false) {
