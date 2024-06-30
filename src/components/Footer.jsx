@@ -38,8 +38,8 @@ function Footer() {
           <div className="flex lg:w-4/12 justify-center text-center">
             <div className="text-xl">
               <p className="font-bold text-gray-900 dark:text-gray-100">Diseño y Desarrollo</p>
-              <p className="mt-1 mb-1 text-black text-base">Juan Diego Morales</p>
-              <p className="mt-1 mb-2 text-black text-base">Jonhathan Sojo</p>
+              <a href="https://www.linkedin.com/in/juan-diego-morales-345aa6216/"><p className="mt-1 mb-1 text-purple-800 text-base">Juan Diego Morales</p></a>
+              <a href="https://www.linkedin.com/in/sojoki/"><p className="mt-1 mb-2 text-purple-800 text-base">Jonhathan Sojo</p></a>
 
             </div>
           </div>
