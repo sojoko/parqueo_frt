@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback  } from 'react';
 import { useEffect } from 'react';
 import { API_URL } from "../config/API_URLS.tsx";
 
@@ -8,11 +8,7 @@ function ApredizTicketsTable() {
     const [ticketsData, setTicketsData] = useState(null);
     const doc = localStorage.getItem('userDocument');
 
-    useEffect(() => {
-        handleLoad();
-    }, ); 
-
-    async function handleLoad() {
+    const handleLoad = useCallback(async () => {
         try {
             setLoading(true);
             const response = await fetch(`${API_URL}/Tickets-by-user/${doc}`, {
@@ -32,8 +28,13 @@ function ApredizTicketsTable() {
         } catch (error) {
             console.error('Error:', error);
         } 
-    }
+    }, []);
         
+    useEffect(() => {
+        if (!ticketsData){
+            handleLoad();
+        }
+    }, [ticketsData, handleLoad]); 
      return (
         <>
             {loading && 
