@@ -65,7 +65,7 @@ function NavBar() {
                     </span>
                     </a>
                 )}
-                {roll === 1 && (
+                {(roll === 1 || roll === 3) && (
                     <a href="/users-administration" className={`${isActiveUsers || isActiveUsersList || isActiveCreateUserEmployee || isActiveAprendizRequest ? 'text-purple-700' : ''} flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-amber-700 group-hover:text-purple-700`}>
                     <span className="block px-1 pt-1">
                         <div className="flex justify-center text-3xl lg:text-5xl"><HiOutlineUsers /></div>
