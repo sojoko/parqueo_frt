@@ -7,11 +7,7 @@ function TicketsTable() {
     const [loading, setLoading] = useState(false);
     const [ticketsData, setTicketsData] = useState(null);
 
-    useEffect(() => {
-        if (!ticketsData){
-        handleLoad();
-        }
-    }, [ticketsData, handleLoad]); 
+  
 
     const handleLoad = useCallback(async () => {
         try {
@@ -34,6 +30,12 @@ function TicketsTable() {
             console.error('Error:', error);
         } 
     }, []);
+
+    useEffect(() => {
+        if (!ticketsData){
+        handleLoad();
+        }
+    }, [ticketsData, handleLoad]); 
         
      return (
         <>
