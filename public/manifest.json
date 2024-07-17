@@ -1,6 +1,7 @@
 {
   "short_name": "Parqueo",
   "name": "Parqueo APP",
+  "description": "Aplicación para el control de parqueos",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,17 +9,17 @@
       "type": "image/x-icon"
     },
     {
-      "src": "parqueoicon.png",
+      "src": "parqueo_192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "parqueoicon.png",
+      "src": "parqueo_512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
