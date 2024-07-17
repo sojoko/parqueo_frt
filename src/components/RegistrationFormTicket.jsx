@@ -1,5 +1,6 @@
  import React, { useState } from 'react';
-
+ import { API_URL } from "../config/API_URLS.tsx";
+ 
   const RegistrationFormTicket = () => {
     // const [vehicle_type, setVehicleType] = useState("");
     // const [placa, setPlaca] = useState("");
