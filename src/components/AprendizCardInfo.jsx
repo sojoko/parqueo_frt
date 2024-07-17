@@ -26,6 +26,8 @@ export function AprendizCardInfo() {
     const [parkingStatus, setParkingStatus] = useState(null);
     const [existParking, setExistParking] = useState(false);
     const [parkingCounter, setParkingCounter] = useState(null);
+    const [parkingLoaded, setParkingLoaded] = useState(false);
+
 
     const handleLoad = useCallback(async () => {
         try {
@@ -115,6 +117,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         } finally {
+            setParkingLoaded(true);
             // setLoading(false);
         }
     }, [document]);
@@ -169,19 +172,23 @@ export function AprendizCardInfo() {
     }, [document, parkingStatus, parkingCounter]);
 
     useEffect(() => {
-        if (!aprendizData) {
-            handleLoad();
-            handleLoad2();
-            handleLoadParking();
-            handleLoad3();
-        }
-    }, [handleLoad, handleLoad2,handleLoad3, handleLoadParking, aprendizData]);
+        const loadAllData = async () => {
+            if (!aprendizData) {
+                await handleLoad();
+                await handleLoad2();
+                await handleLoadParking();
+                await handleLoad3();
+            }
+        };
+    
+        loadAllData();
+    }, [handleLoad, handleLoad2, handleLoad3, handleLoadParking, aprendizData]);
 
     useEffect(() => {
-        if (aprendizData && existParking === false) {
+        if (aprendizData && !existParking && parkingLoaded) {
             handleSetParkingStatus();
         }
-    }, [aprendizData, existParking, handleSetParkingStatus]);
+    }, [aprendizData, existParking, parkingLoaded, handleSetParkingStatus]);
 
     const handleDocument = () => {
         setDocumentSender(aprendizData.document);
