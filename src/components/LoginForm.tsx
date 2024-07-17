@@ -16,7 +16,6 @@ function LoginForm() {
     //   };
     const handleSubmit =  async (event) => {
         event.preventDefault();
-
         try {
             const response = await fetch(`${API_URL}/login`, {
                 method: 'post',
@@ -34,7 +33,6 @@ function LoginForm() {
                auth.saveUser(data);
                            
             }
-
             console.log('Respuesta de la API:', data);
             alert('Autenticado correctamente');
         } catch (error) {
