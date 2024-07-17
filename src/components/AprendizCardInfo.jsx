@@ -91,7 +91,7 @@ export function AprendizCardInfo() {
             }
             setLoading(false);
         }
-    }, []);
+    }, [roll]);
 
     const handleLoadParking = useCallback(async () => {
         try {
