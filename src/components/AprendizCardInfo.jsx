@@ -139,7 +139,7 @@ export function AprendizCardInfo() {
     const handleChangeParkingStatus = useCallback(async () => {
         console.log('Parking Counter:', parkingCounter)
         let parkingStatusForSent = parkingStatus === 1 ? 0 : 1;
-        if (parkingCounter.motocycle_in_parking >= parkingCounter.actually_motorcycle_capacity && parkingStatusForSent === 1) {
+        if (parkingCounter.actually_motorcycle_capacity == 0 && parkingStatusForSent === 1) {
             alert('No hay cupo disponible');
             return;
         } 
