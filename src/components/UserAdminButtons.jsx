@@ -24,7 +24,7 @@ function UserAdminButtons() {
 
   return (
 
-    <div className="flex w-100 flex-col gap-8 p-2">   
+    <div className="flex w-100 flex-col gap-8 p-2 -mt-4">   
       {roll === 1 && ( 
       <>
       <button onClick={handleRoll1}>
