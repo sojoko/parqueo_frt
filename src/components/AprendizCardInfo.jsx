@@ -86,7 +86,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         } finally {
-            if (roll === 3) {            
+            if (roll === 2) {            
                 return <Navigate to={"/"} />;
             }
             setLoading(false);
