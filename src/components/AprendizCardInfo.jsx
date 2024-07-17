@@ -151,7 +151,7 @@ export function AprendizCardInfo() {
         } 
 
         try {
-            const response = await fetch(`${API_URL}/parking-registration/${document}`, {
+            const response = await fetch(`${API_URL}/parking-registration-update/${document}`, {
                 method: 'put',
                 body: JSON.stringify({ "user_document": document, "is_in_parking": parkingStatusForSent, "created_at": "", "updated_at": "", "deleted_at": "" }),
                 headers: {
