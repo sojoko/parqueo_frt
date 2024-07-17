@@ -13,7 +13,7 @@ function LoggedLayout ({children}: LoggedHomeProps){
         <header className="sticky top-0 z-10">
           <Header />
         </header>
-        <main className="flex-grow overflow-auto -mt-4 ">
+        <main className="flex-grow overflow-auto -mt-6 ">
           <div className="flex-grow flex items-center justify-center w-full min-h-[45rem]">
             {children}
           </div>
