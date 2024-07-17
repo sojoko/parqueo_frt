@@ -11,6 +11,9 @@ import {
 } from "@material-tailwind/react";
 
 export function AprendizCardInfo() {
+    const roll = parseInt(localStorage.getItem('userRoll'))
+   
+
     const [documentSender, setDocumentSender] = useState("");
     const route = `/aprendiz-info-full?document=${documentSender}`;
     const location = useLocation();
@@ -61,7 +64,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     }, [document]);
 
@@ -83,6 +86,9 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         } finally {
+            if (roll === 3) {            
+                return <Navigate to={"/"} />;
+            }
             setLoading(false);
         }
     }, []);
@@ -111,7 +117,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     }, [document]);
 
@@ -139,7 +145,7 @@ export function AprendizCardInfo() {
     const handleChangeParkingStatus = useCallback(async () => {
         console.log('Parking Counter:', parkingCounter)
         let parkingStatusForSent = parkingStatus === 1 ? 0 : 1;
-        if (parkingCounter.actually_motorcycle_capacity == 0 && parkingStatusForSent === 1) {
+        if (parkingCounter.actually_motorcycle_capacity === 0 && parkingStatusForSent === 1) {
             alert('No hay cupo disponible');
             return;
         } 
@@ -197,6 +203,7 @@ export function AprendizCardInfo() {
 
     return (
         <>
+            
             {loading && (
                 <div className="text-center">
                     <div role="status">
