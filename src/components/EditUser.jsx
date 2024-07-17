@@ -11,7 +11,7 @@ function EditUser() {
   const lastNameByParams = queryParams.get('last_name')
   const [last_name, setLastName] = useState(lastNameByParams);
   const documentByParams = queryParams.get('document')
-  const rollByParams = queryParams.get('roll')
+  const rollByParams = parseInt(queryParams.get('roll'))
   const nameByParams = queryParams.get('name')
   const [name, setName] = useState(nameByParams);
   const [document, setDocument] = useState(documentByParams);
@@ -22,8 +22,6 @@ function EditUser() {
   const navigate = useNavigate();
 
 
-
- 
 
 
   const handleSubmit =  async (event) => {
