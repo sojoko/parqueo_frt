@@ -141,7 +141,7 @@ import { API_URL } from "../config/API_URLS.tsx";
         formData2.append('image', image);  
         formData2.append('document', '12345');
     
-        const response = await fetch(`${API_URL}/api/v1/upload_img_s3`, {
+        const response = await fetch(`${API_URL}/upload_img_s3`, {
           method: 'POST',
           body: formData2,
         });
@@ -164,7 +164,7 @@ import { API_URL } from "../config/API_URLS.tsx";
         const formData2 = new FormData();
         formData2.append('image', image);        
     
-        const response = await fetch(`${API_URL}/api/v1/upload_img_s3`, {
+        const response = await fetch(`${API_URL}/upload_img_s3`, {
           method: 'POST',
           body: formData2,
         });
