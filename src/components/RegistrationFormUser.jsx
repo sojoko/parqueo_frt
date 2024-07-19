@@ -34,18 +34,35 @@ import { API_URL } from "../config/API_URLS.tsx";
 
 
     const [continueButton, setContinueButton] = useState(false);
-    const [vehicleType, setVehicleType] = useState("");
+    const [vehicleType, setVehicleType] = useState("tipo");
     const [image, setImage] = useState(null);
     const [vehiclePhoto, setVehiclePhoto] = useState(null);
     const [propertyCardPhoto, setpropertyCardPhoto] = useState(null);
     const [resquestSended, setRequestSended] = useState(false);
     const [errors, setErrors] = useState({});
     const [errorEndpoint, setErrorEndpoint] = useState("");
-
+    const [documentType, setDocumentType] = useState("tipodoc");
+    
     const handleVehicleTypeChange = (event) => {
       setVehicleType(event.target.value);
     };
-  
+
+    const handleDocumentType = (event) => {
+      const selectedType = event.target.value;
+      setDocumentType(selectedType);
+    
+      if (selectedType !== 'tipodoc') {
+        setErrors((prevErrors) => {
+          const { document, ...restErrors } = prevErrors;
+          if (document === "elige un tipo de documento") {
+            return restErrors;
+          }
+          return prevErrors;
+        });
+      }
+    };
+
+
     const validateFields = (name, value) => {
       let error = '';
       if (name === 'ficha' && !/^[0-9]+$/.test(value)) {
@@ -53,10 +70,30 @@ import { API_URL } from "../config/API_URLS.tsx";
       }
       else if (name === 'document' && !/^[0-9]+$/.test(value)) {
         error = 'Por favor ingresa un número de documento válido.';
+        console.log(value);        
       }
       else if (name === 'email' && !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value)) {
         error = 'Por favor ingresa un correo válido.';
-      }
+      }    
+      
+      else if (name === 'document' && value) {  
+        if (documentType === 'tipodoc') {
+          error = 'elige un tipo de documento';
+        }
+      } 
+      // else if (name === 'placa' && value ) {
+      //   if (vehicleType === 'tipo') {
+      //     error = 'Por selecciona un tipo';
+      //   }
+      // }
+      // else if (name === 'modelo' && value ) {
+      //   if (vehicleType === 'tipo') {
+      //     error = 'Por selecciona un tipo';
+      //   }
+      // }
+
+
+      console.log('Error:', error);
       return error;
     };
 
@@ -66,7 +103,7 @@ import { API_URL } from "../config/API_URLS.tsx";
             ...formData,
             [name]: value
         });
-
+      
         const error = validateFields(name, value);
         setErrors((prevErrors) => ({
           ...prevErrors,
@@ -80,6 +117,7 @@ import { API_URL } from "../config/API_URLS.tsx";
           ...formVehicleDataMoto,
           [name]: value
       });
+
   };
 
     const handleSubmit = async (e) => {
@@ -231,6 +269,8 @@ import { API_URL } from "../config/API_URLS.tsx";
       setContinueButton(true)
     };
 
+ 
+
   return (
     <>
     <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">
@@ -286,13 +326,18 @@ import { API_URL } from "../config/API_URLS.tsx";
             <select 
               id="documentType"
               required
+              name='documentType'
+              onChange={handleDocumentType}
               className= " bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-700 focus:border-amber-700 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            >
-              <option defaultValue={"Tipo de documento"}>Tipo de documento*</option>
+               <option selected value="tipodoc" disabled  className="text-gray-400">
+                Tipo de documento*
+              </option>              
               <option value="CC">Cedula de ciudadania</option>
               <option value="CE">Cedula de extranjeria</option>
               <option value="TI">Tarjeta de identidad</option>
               <option value="PT">Permiso por proteccion temporal</option>
             </select>
+           
           </div>
           <div className="mb-4">
             <label
@@ -390,7 +435,10 @@ import { API_URL } from "../config/API_URLS.tsx";
             Foto tipo carnet*
           </label>
           <div className="flex w-full items-center justify-center">
-            <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-700">
+          <label className={`w-full flex flex-col items-center px-1 py-1 text-blue rounded-lg shadow-lg 
+              tracking-wide border-2 border-blue hover:bg-blue hover:text-amber-500 invalid:border-pink-600 invalid:border-2 ${
+                (formData.email && formData.ficha) ? 'cursor-pointer bg-white' : 'hover:text-red-500 cursor-not-allowed bg-gray-200'
+              }`}>
               <svg
                 class="w-8 h-8"
                 fill="currentColor"
@@ -400,7 +448,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                 <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
               </svg>
               <span class="text-s leading-normal">Selecciona un archivo</span>
-              <input type="file" id="foto_carnet" class="hidden" onChange={handleImageChange} />
+              <input type="file" id="foto_carnet" class="hidden" onChange={handleImageChange}  disabled={!formData.email || !formData.ficha}/>
             </label>
           </div>
           {image && (
@@ -430,19 +478,25 @@ import { API_URL } from "../config/API_URLS.tsx";
             type="button"            
           >
             Volver atras
-          </button>
+        
+          </button>               
             <select
               id="vehicleType"
+              name="tipoVehiculo"
               required
               className="bg-gray-50 border mb-4 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"
-              onChange={handleVehicleTypeChange}
+              onChange={handleVehicleTypeChange}  
+                         
             >
-              <option selected value="tipo">
+              <option selected value="tipo" disabled  className="text-gray-400">
                 Tipo de vehiculo*
               </option>
+              
               <option value="motocicleta">Motocicleta</option>
               <option value="bicicleta">Bicicleta</option>
+              
             </select>
+      
           </div>
 
           <div className="max-w-2xl mx-auto">
@@ -450,11 +504,14 @@ import { API_URL } from "../config/API_URLS.tsx";
               id="marca"
               required
               name="marca"
-              className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"
+              className={`bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5
+               dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800
+                dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2 ${vehicleType === 'tipo' ? 'cursor-not-allowed ' : ''}`}
               onChange={handleInputChange2}
               value={formVehicleDataMoto.marca}
+              disabled = {vehicleType==='tipo' }
            >
-              <option selected>Selecciona una marca*</option>
+              <option selected value="marca" disabled  className="text-gray-400">Selecciona una marca*</option >
               {vehicleType === "bicicleta" && (
                 <>
                   <option selected>Haro</option>
@@ -469,11 +526,11 @@ import { API_URL } from "../config/API_URLS.tsx";
                   <option value="honda">Honda</option>
                 </>
               )}
-            </select>
+            </select>           
           </div>
 
           
-            <div className="mb-4">
+            <div className="mb-4">          
             {vehicleType === "motocicleta" && (
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
@@ -500,12 +557,14 @@ import { API_URL } from "../config/API_URLS.tsx";
                 value={formVehicleDataMoto.placa}
                 onChange={handleInputChange2}
                 required
+                disabled = {vehicleType==='tipo'}
               />
             </div>
        
   
          
             <div className="mb-4">
+           
               <label
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
                 htmlFor="model"
@@ -521,6 +580,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                 value={formVehicleDataMoto.modelo}
                 onChange={handleInputChange2}
                 required
+                disabled = {vehicleType==='tipo'}
               />
             </div>        
 
@@ -540,6 +600,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               value={formVehicleDataMoto.color}
               onChange={handleInputChange2}
               required
+              disabled = {vehicleType==='tipo'}
             />
           </div>
 
@@ -551,7 +612,8 @@ import { API_URL } from "../config/API_URLS.tsx";
               Fotografia*
             </label>
             <div className="flex w-full items-center justify-center">
-              <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-500 invalid:border-pink-600 invalid:border-2">
+              <label  className={`w-full flex flex-col items-center px-1 py-1  text-blue rounded-lg shadow-lg 
+              tracking-wide border-2 border-blue  hover:bg-blue hover:text-amber-500 invalid:border-pink-600 invalid:border-2 ${vehicleType === 'tipo' ? 'hover:text-red-500 cursor-not-allowed bg-gray-200' : 'cursor-pointer bg-white'}`}>
                 <svg
                   class="w-8 h-8"
                   fill="currentColor"
@@ -561,7 +623,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                   <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                 </svg>
                 <span class="text-s leading-normal invalid:border-pink-600 invalid:border-2">Selecciona un archivo</span>
-                <input type="file" class="hidden " required  onChange={handleVehiclePhoto} />
+                <input type="file" className={`hidden ${vehicleType === 'tipo' ? '' : ''}` } required  onChange={handleVehiclePhoto} disabled = {vehicleType === 'tipo' } />
               </label>
             </div>
           </div>
@@ -581,7 +643,8 @@ import { API_URL } from "../config/API_URLS.tsx";
               Tarjeta de propiedad*
             </label>
             <div className="flex w-full items-center justify-center">
-              <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-500">
+              <label className={`w-full flex flex-col items-center px-1 py-1  text-blue rounded-lg shadow-lg 
+              tracking-wide border-2 border-blue  hover:bg-blue hover:text-amber-500 invalid:border-pink-600 invalid:border-2 ${vehicleType === 'tipo' ? 'hover:text-red-500 cursor-not-allowed bg-gray-200' : 'cursor-pointer bg-white'}`}>
                 <svg
                   class="w-8 h-8"
                   fill="currentColor"
@@ -591,7 +654,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                   <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                 </svg>
                 <span class="text-s leading-normal">Selecciona un archivo</span>
-                <input type="file" class="hidden" required  onChange={handleVehiclePhotoProperty} />
+                <input type="file" class="hidden" required  onChange={handleVehiclePhotoProperty} disabled = {vehicleType === 'tipo'} />
               </label>
             </div>
           </div>
@@ -634,7 +697,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="observations"
             >
-              Observaciones*
+              Observaciones
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
@@ -644,15 +707,16 @@ import { API_URL } from "../config/API_URLS.tsx";
               placeholder="tiene calcomanias en el tanque"
               value={formVehicleDataMoto.observaciones}
               onChange={handleInputChange2}
-              required
+              disabled = {vehicleType === 'tipo'}
+              
             />
           </div>    
    
           <button
             onClick={handleSubmit}
-            className= {`w-full bg-amber-500 text-white text-s font-bold py-2 px-4 rounded-md hover:text-teal-800 hover:bg-amber-400 transition duration-300 ${!vehicleType || !formVehicleDataMoto.marca || !formVehicleDataMoto.placa || !formVehicleDataMoto.modelo || !formVehicleDataMoto.color || !formVehicleDataMoto.observaciones || !vehiclePhoto || !propertyCardPhoto ? 'cursor-not-allowed opacity-50 hover:bg-amber-500' : ''}`}
+            className= {`w-full bg-amber-500 text-white text-s font-bold py-2 px-4 rounded-md hover:text-teal-800 hover:bg-amber-400 transition duration-300 ${!errors || !formVehicleDataMoto.placa || !formVehicleDataMoto.modelo || !formVehicleDataMoto.color || !vehiclePhoto || !propertyCardPhoto ? 'cursor-not-allowed opacity-50 hover:bg-amber-500' : ''}`}
             type="submit"
-            disabled={!vehicleType || !formVehicleDataMoto.marca || !formVehicleDataMoto.placa || !formVehicleDataMoto.modelo || !formVehicleDataMoto.color || !formVehicleDataMoto.observaciones || !vehiclePhoto || !propertyCardPhoto}
+            disabled={!errors || !formVehicleDataMoto.placa || !formVehicleDataMoto.modelo || !formVehicleDataMoto.color || !vehiclePhoto || !propertyCardPhoto}
           >
             Finalizar
           </button>
