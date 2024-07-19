@@ -69,8 +69,8 @@ import { API_URL } from "../config/API_URLS.tsx";
         error = 'Por favor ingresa un número de ficha válido.';
       }
       else if (name === 'document' && !/^[0-9]+$/.test(value)) {
-        error = 'Por favor ingresa un número de documento válido.';
-        console.log(value);        
+        error = 'Por favor ingresa un número de documento válido.';      
+        
       }
       else if (name === 'email' && !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value)) {
         error = 'Por favor ingresa un correo válido.';
@@ -80,20 +80,7 @@ import { API_URL } from "../config/API_URLS.tsx";
         if (documentType === 'tipodoc') {
           error = 'elige un tipo de documento';
         }
-      } 
-      // else if (name === 'placa' && value ) {
-      //   if (vehicleType === 'tipo') {
-      //     error = 'Por selecciona un tipo';
-      //   }
-      // }
-      // else if (name === 'modelo' && value ) {
-      //   if (vehicleType === 'tipo') {
-      //     error = 'Por selecciona un tipo';
-      //   }
-      // }
-
-
-      console.log('Error:', error);
+      }     
       return error;
     };
 
@@ -246,6 +233,7 @@ import { API_URL } from "../config/API_URLS.tsx";
     };
 
     if (resquestSended) {
+      alert('Solicitud de registro enviada, ahora puedes revisar tu solicitud en la pagina principal');
       window.location.href = '/';
     }
 
@@ -448,7 +436,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                 <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
               </svg>
               <span class="text-s leading-normal">Selecciona un archivo</span>
-              <input type="file" id="foto_carnet" class="hidden" onChange={handleImageChange}  disabled={!formData.email || !formData.ficha}/>
+              <input type="file" id="foto_carnet" class="hidden"  accept=".png,.jpg,.jpeg" onChange={handleImageChange}  disabled={!formData.email || !formData.ficha }/>
             </label>
           </div>
           {image && (
@@ -623,7 +611,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                   <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                 </svg>
                 <span class="text-s leading-normal invalid:border-pink-600 invalid:border-2">Selecciona un archivo</span>
-                <input type="file" className={`hidden ${vehicleType === 'tipo' ? '' : ''}` } required  onChange={handleVehiclePhoto} disabled = {vehicleType === 'tipo' } />
+                <input type="file" accept=".png,.jpg,.jpeg" className={`hidden ${vehicleType === 'tipo' ? '' : ''}` } required  onChange={handleVehiclePhoto} disabled = {vehicleType === 'tipo' } />
               </label>
             </div>
           </div>
@@ -654,7 +642,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                   <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                 </svg>
                 <span class="text-s leading-normal">Selecciona un archivo</span>
-                <input type="file" class="hidden" required  onChange={handleVehiclePhotoProperty} disabled = {vehicleType === 'tipo'} />
+                <input type="file" class="hidden" required accept=".png,.jpg,.jpeg" onChange={handleVehiclePhotoProperty} disabled = {vehicleType === 'tipo'} />
               </label>
             </div>
           </div>
