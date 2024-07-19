@@ -39,11 +39,26 @@ import { API_URL } from "../config/API_URLS.tsx";
     const [vehiclePhoto, setVehiclePhoto] = useState(null);
     const [propertyCardPhoto, setpropertyCardPhoto] = useState(null);
     const [resquestSended, setRequestSended] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [errorEndpoint, setErrorEndpoint] = useState("");
 
     const handleVehicleTypeChange = (event) => {
       setVehicleType(event.target.value);
     };
   
+    const validateFields = (name, value) => {
+      let error = '';
+      if (name === 'ficha' && !/^[0-9]+$/.test(value)) {
+        error = 'Por favor ingresa un número de ficha válido.';
+      }
+      else if (name === 'document' && !/^[0-9]+$/.test(value)) {
+        error = 'Por favor ingresa un número de documento válido.';
+      }
+      else if (name === 'email' && !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value)) {
+        error = 'Por favor ingresa un correo válido.';
+      }
+      return error;
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -51,6 +66,13 @@ import { API_URL } from "../config/API_URLS.tsx";
             ...formData,
             [name]: value
         });
+
+        const error = validateFields(name, value);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: error,
+        }));
+     
     };
     const handleInputChange2 = (e) => {
       const { name, value } = e.target;
@@ -63,8 +85,7 @@ import { API_URL } from "../config/API_URLS.tsx";
     const handleSubmit = async (e) => {
         e.preventDefault();
         let urlAPI = ''
-        let newForm1 = {}
-      
+        let newForm1 = {}      
     
         if (vehicleType === 'motocicleta') {
             urlAPI = `${API_URL}/motocicleta-registration`;
@@ -116,6 +137,7 @@ import { API_URL } from "../config/API_URLS.tsx";
             console.error('Error:', error);
             console.log(newForm1);
             alert(`${error}`);
+            setErrorEndpoint(error.message);
         }
     };
 
@@ -189,6 +211,27 @@ import { API_URL } from "../config/API_URLS.tsx";
       window.location.href = '/';
     }
 
+    const isFormValid = () => {
+      return (
+        Object.values(errors).every((error) => !error) &&
+        formData.name &&
+        formData.last_name &&
+        formData.document &&
+        formData.ficha &&
+        formData.email &&
+        formData.finish_date &&
+        image
+      );
+    };
+   
+    const handleContinueButton = () => {
+      if  (!isFormValid()) {
+        setError('Por favor completa todos los campos.');
+        return;
+      }
+      setContinueButton(true)
+    };
+
   return (
     <>
     <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">
@@ -205,7 +248,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
-              Nombres
+              Nombres*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
@@ -225,7 +268,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
-              Apellidos
+              Apellidos*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
@@ -245,7 +288,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               id="documentType"
               required
               className= " bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-s rounded-lg focus:ring-amber-700 focus:border-amber-700 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-amber-500 dark:focus:border-amber-50 invalid:border-red-500 invalid:border-2"            >
-              <option defaultValue={"Tipo de documento"}>Tipo de documento</option>
+              <option defaultValue={"Tipo de documento"}>Tipo de documento*</option>
               <option value="CC">Cedula de ciudadania</option>
               <option value="CE">Cedula de extranjeria</option>
               <option value="TI">Tarjeta de identidad</option>
@@ -257,7 +300,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
-             Numero de documento
+             Numero de documento*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
@@ -270,33 +313,35 @@ import { API_URL } from "../config/API_URLS.tsx";
               onChange={handleInputChange}
               required
             />
+            {errors.document && <span className="text-pink-600">{errors.document}</span>}
           </div>
           <div className="mb-4">
             <label
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
-             Numero de ficha
+             Numero de ficha*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
               type="text"
               id="ficha"
               name="ficha"
-              placeholder="2454434 " 
+              placeholder="2454434" 
               pattern="^[0-9]+"
               value={formData.ficha}
               onChange={handleInputChange}
               required
             />
+            {errors.ficha && <span className="text-pink-600">{errors.ficha}</span>}
           </div>
 
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 mt-4 text-start"
+              className="block text-teal-800 text-sm font-bold mb-2 mt-4 text-start"
               htmlFor="email"
             >
-              Email
+              Email*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
@@ -305,17 +350,19 @@ import { API_URL } from "../config/API_URLS.tsx";
               name="email"
               placeholder="john@example.com"
               onChange={handleInputChange}
+              value={formData.email}
               required
             />
+            {errors.email && <span className="text-pink-600">{errors.email}</span>}
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 mt-4 text-start"
+              className="block text-teal-800 text-sm font-bold mb-2 mt-4 text-start"
               htmlFor="email"
             >
-              Fecha de finalizacion del programa
+              Fecha de finalizacion del programa*
             </label>
-            <input
+            {/* <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-700 invalid:border-pink-600 invalid:border-2"
               type="text"
               id="fish_date"
@@ -324,6 +371,16 @@ import { API_URL } from "../config/API_URLS.tsx";
               value={formData.finish_date}
               onChange={handleInputChange}
               required
+            /> */}
+             <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
+              type="date"
+              id="fish_date"
+              name="finish_date"
+              placeholder="2022-12-31"
+             value={formData.finish_date}
+             onChange={handleInputChange}
+             required
             />
           </div>
           <div className="mb-4">
@@ -331,7 +388,7 @@ import { API_URL } from "../config/API_URLS.tsx";
             className="block text-teal-800 text-sm font-bold mb-2 text-start"
             htmlFor="name"
           >
-            Foto tipo carnet
+            Foto tipo carnet*
           </label>
           <div className="flex w-full items-center justify-center">
             <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-700">
@@ -355,18 +412,26 @@ import { API_URL } from "../config/API_URLS.tsx";
           )}
           </div>
           <button
-            onClick={() => setContinueButton(true)}
-            className="w-full bg-amber-700 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition duration-300"
+            onClick={handleContinueButton}
+            className= {` w-full bg-amber-700 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition duration-300 ${!isFormValid() ? 'cursor-not-allowed opacity-50 hover:bg-amber-500' : ''}`}
             type="button"
+            disabled={!isFormValid()}
           >
             Continuar
-          </button>
+          </button>          
         </form>
          )}
 
       {continueButton && (
            <form className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
           <div className="max-w-2xl mx-auto">
+          <button
+            onClick={() => setContinueButton(false)}
+            className= {` mb-4 w-full bg-amber-700 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition duration-300 ${!formData.name || !formData.last_name || !formData.document || !formData.ficha || !formData.email || !formData.finish_date || !image ? 'cursor-not-allowed opacity-50 hover:bg-amber-500' : ''}`}
+            type="button"            
+          >
+            Volver atras
+          </button>
             <select
               id="vehicleType"
               required
@@ -374,7 +439,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               onChange={handleVehicleTypeChange}
             >
               <option selected value="tipo">
-                Tipo de vehiculo
+                Tipo de vehiculo*
               </option>
               <option value="motocicleta">Motocicleta</option>
               <option value="bicicleta">Bicicleta</option>
@@ -390,7 +455,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               onChange={handleInputChange2}
               value={formVehicleDataMoto.marca}
            >
-              <option selected>Selecciona una marca</option>
+              <option selected>Selecciona una marca*</option>
               {vehicleType === "bicicleta" && (
                 <>
                   <option selected>Haro</option>
@@ -415,7 +480,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
                 htmlFor="serial_number"
               >
-                Numero de placa
+                Numero de placa*
               </label>
                )}       
               {vehicleType === "bicicleta" && (
@@ -423,7 +488,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                  className="block text-teal-800 text-sm font-bold mb-2 text-start"
                  htmlFor="serial_number"
                >
-                 Numero de marco
+                 Numero de marco*
                </label>
 
               )}       
@@ -446,7 +511,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                 className="block text-teal-800 text-sm font-bold mb-2 text-start"
                 htmlFor="model"
               >
-                Modelo
+                Modelo*
               </label>
               <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
@@ -458,18 +523,14 @@ import { API_URL } from "../config/API_URLS.tsx";
                 onChange={handleInputChange2}
                 required
               />
-            </div>
-     
-         
-      
- 
+            </div>        
 
           <div className="mb-4">
             <label
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="color"
             >
-              Color
+              Color*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
@@ -488,7 +549,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
-              Fotografia
+              Fotografia*
             </label>
             <div className="flex w-full items-center justify-center">
               <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-500 invalid:border-pink-600 invalid:border-2">
@@ -518,7 +579,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="name"
             >
-              Tarjeta de propiedad
+              Tarjeta de propiedad*
             </label>
             <div className="flex w-full items-center justify-center">
               <label className="w-full flex flex-col items-center px-1 py-1 bg-white text-blue rounded-lg shadow-lg tracking-wide border-2 border-blue cursor-pointer hover:bg-blue hover:text-amber-500">
@@ -531,7 +592,7 @@ import { API_URL } from "../config/API_URLS.tsx";
                   <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                 </svg>
                 <span class="text-s leading-normal">Selecciona un archivo</span>
-                <input type="file" class="hidden" onChange={handleVehiclePhotoProperty} />
+                <input type="file" class="hidden" required  onChange={handleVehiclePhotoProperty} />
               </label>
             </div>
           </div>
@@ -574,7 +635,7 @@ import { API_URL } from "../config/API_URLS.tsx";
               className="block text-teal-800 text-sm font-bold mb-2 text-start"
               htmlFor="observations"
             >
-              Observaciones
+              Observaciones*
             </label>
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amber-500 invalid:border-pink-600 invalid:border-2"
@@ -590,11 +651,18 @@ import { API_URL } from "../config/API_URLS.tsx";
    
           <button
             onClick={handleSubmit}
-            className="w-full bg-amber-500 text-white text-s font-bold py-2 px-4 rounded-md hover:text-teal-800 hover:bg-amber-400 transition duration-300"
+            className= {`w-full bg-amber-500 text-white text-s font-bold py-2 px-4 rounded-md hover:text-teal-800 hover:bg-amber-400 transition duration-300 ${!vehicleType || !formVehicleDataMoto.marca || !formVehicleDataMoto.placa || !formVehicleDataMoto.modelo || !formVehicleDataMoto.color || !formVehicleDataMoto.observaciones || !vehiclePhoto || !propertyCardPhoto ? 'cursor-not-allowed opacity-50 hover:bg-amber-500' : ''}`}
             type="submit"
+            disabled={!vehicleType || !formVehicleDataMoto.marca || !formVehicleDataMoto.placa || !formVehicleDataMoto.modelo || !formVehicleDataMoto.color || !formVehicleDataMoto.observaciones || !vehiclePhoto || !propertyCardPhoto}
           >
             Finalizar
           </button>
+          {errorEndpoint && (
+            <div className="bg-red-200 p-2 mt-2 text-red-700 text-center">
+              {errorEndpoint}
+            </div>
+          
+          )}
         </form>
       )}
       </div>
