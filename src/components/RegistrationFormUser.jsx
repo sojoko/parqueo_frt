@@ -225,10 +225,9 @@ import { API_URL } from "../config/API_URLS.tsx";
     };
    
     const handleContinueButton = () => {
-      if  (!isFormValid()) {
-        setError('Por favor completa todos los campos.');
-        return;
-      }
+      // if  (!isFormValid()) {        
+      //   return;
+      // }
       setContinueButton(true)
     };
 
