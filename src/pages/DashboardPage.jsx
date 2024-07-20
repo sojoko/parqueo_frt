@@ -6,6 +6,7 @@ import { DashboardMoto } from "../components/DashboardMoto";
 import React from 'react';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
+import { API_URL } from '../config/API_URLS.tsx';
 
 function DashboardPage (){
 
