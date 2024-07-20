@@ -140,6 +140,7 @@ function EditUser() {
               value={document}
               onChange={(e) => setDocument(e.target.value)}
               required
+              disabled
             />
           </div>     
    
