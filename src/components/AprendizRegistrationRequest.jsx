@@ -127,7 +127,8 @@ const handleSearchChange = (event) => {
       handleLoad();
       setHasLoadedData(true);
     }
-  }, [hasLoadedData, handleLoad]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasLoadedData]);
 
   useEffect(() => {
     if (hasLoadedData) {
