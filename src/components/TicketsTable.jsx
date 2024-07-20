@@ -6,6 +6,8 @@ function TicketsTable() {
 
     const [loading, setLoading] = useState(false);
     const [ticketsData, setTicketsData] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [arregloInvertido, setArregloInvertido] = useState(null);
 
   
 
@@ -25,6 +27,7 @@ function TicketsTable() {
             console.log('Respuesta de la API:', data);
             setTicketsData(data);       
             setLoading(false);    
+            setIsLoaded(true);
            
         } catch (error) {
             console.error('Error:', error);
@@ -36,6 +39,13 @@ function TicketsTable() {
         handleLoad();
         }
     }, [ticketsData, handleLoad]); 
+
+
+    useEffect(() => {
+        if (isLoaded === true){
+            setArregloInvertido(ticketsData.reverse());             
+        }
+    }, [isLoaded, ticketsData, arregloInvertido]); 
         
      return (
         <>
