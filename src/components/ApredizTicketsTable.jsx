@@ -25,21 +25,19 @@ function ApredizTicketsTable() {
             const data = await response.json();
             console.log('Respuesta de la API:', data);
             setTicketsData(data);       
-            setIsLoaded(true);
-            console.log(ticketsData)           
+            setIsLoaded(true);                   
             setLoading(false);    
            
         } catch (error) {
             console.error('Error:', error);
         } 
-    }, [doc]);
+    }, [doc, ticketsData]);
         
     useEffect(() => {
         if (isLoaded === true){
-            setArregloInvertido(ticketsData.reverse());   
-            console.log(arregloInvertido)
+            setArregloInvertido(ticketsData.reverse());             
         }
-    }, [isLoaded, ticketsData]); 
+    }, [isLoaded, ticketsData, arregloInvertido]); 
         
 
     useEffect(() => {
