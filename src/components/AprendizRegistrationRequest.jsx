@@ -108,6 +108,7 @@ const handleOpenModalVImg = (photoUrl) => {
   setShowModalImg(!showModalVImg);
   setSelectedVPhotoUrl(photoUrl);
 }
+console.log(handleOpenModalVImg);
 
 
 const handleTabChange = (event, newValue) => {
@@ -126,7 +127,7 @@ const handleSearchChange = (event) => {
       handleLoad();
       setHasLoadedData(true);
     }
-  }, [hasLoadedData]);
+  }, [hasLoadedData, handleLoad]);
 
   useEffect(() => {
     if (hasLoadedData) {
