@@ -396,7 +396,7 @@ useEffect(() => {
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal text-purple-600">
-          Página {pageValue} de {Math.round(totalValues / 5)}
+          Página {pageValue} de {Math.round(totalValues / 5) + 1}
         </Typography>
         <div className="flex gap-2">
           <Button
@@ -413,7 +413,7 @@ useEffect(() => {
                 variant="outlined"
                 size="sm"
                 color="purple"
-                disabled={pageValue === Math.round(totalValues / 5)}                
+                disabled={pageValue === Math.round(totalValues / 5) + 1}                
               >
                 Siguiente
               </Button>
