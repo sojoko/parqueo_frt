@@ -39,24 +39,40 @@ const TABLE_HEAD = ["Nombre", "Estado", "Documento","Ficha", "A-Foto", "Fecha-S"
 "V-Color", "V-Foto", "V-Tarjeta", "V-Observaciones", "Acciones"];
  
 export function AprendizRegistrationRequest() {
-const [selectedTab, setSelectedTab] = useState('all');
+const [selectedTab, setSelectedTab] = useState(1);
 const [filteredRows, setFilteredRows] = useState([]);
 const [searchTerm, setSearchTerm] = useState('');
 const [showModal, setShowModal] = useState(false);
 const [aprendizData, setAprendizData] = useState(null);
 const [loading, setLoading] = useState(false);
 const [hasLoadedData, setHasLoadedData] = useState(false);
-const [showModalImg, setShowModalImg] = useState(false);
+const [showModalImg, setShowModalImg] = useState(false); 
 const [showModalVImg] = useState(false);
 const [selectedPhotoUrl, setSelectedPhotoUrl] = useState(null);
 const [selectedVPhotoUrl, setSelectedVPhotoUrl] = useState(null);
 const [selectedDocument, setSelectedDocument] = useState(null);
+const [pageValue, setPageValue] = useState(1);
+const [totalValues, setTotalValues] = useState(0);
+
+
+function handlePageChangeMinus() {  
+  if (pageValue > 1) {
+    setPageValue(prevPageValue => prevPageValue - 1);
+  } else {
+    setPageValue(1);
+  }
+}
+
+function handlePageChangePlus() {    
+  setPageValue(prevPageValue => prevPageValue + 1);
+}
+
 
 
 async function handleLoad() {
   try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/aprendiz-status`, {
+      const response = await fetch(`${API_URL}/aprendiz-status?page=${pageValue}`, {
           method: 'get',
           headers: {
               'Content-Type': 'application/json'
@@ -69,16 +85,17 @@ async function handleLoad() {
       console.log('Respuesta de la API:', data);  
       setAprendizData(data);   
       setFilteredRows(data);
+      setTotalValues(data.total_items);
   } catch (error) {
       console.error('Error:', error);
   } finally {
     setLoading(false);
+    
   }
 }
 
 const handleOpenModal = (document) => {
   setShowModal(!showModal);
-  console.log('Modal abierto');
   setSelectedDocument(document);
 }
 
@@ -92,10 +109,9 @@ const handleOpenModalVImg = (photoUrl) => {
   setSelectedVPhotoUrl(photoUrl);
 }
 
-console.log(handleOpenModalVImg)
 
 const handleTabChange = (event, newValue) => {
-    console.log('Nuevo valor de tab:', newValue);
+    console.log('holi');
     setSelectedTab(newValue);  
     setFilteredRows([]);
   };
@@ -111,21 +127,34 @@ const handleSearchChange = (event) => {
       setHasLoadedData(true);
     }
   }, [hasLoadedData]);
+
+  useEffect(() => {
+    if (hasLoadedData) {
+      handleLoad();
+
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageValue]);
   
 
 useEffect(() => {
   const fetchDataAndFilter = async () => {
-    if (hasLoadedData && aprendizData) {
-    const newFilteredRows = aprendizData.filter((row) => {   
-      if (selectedTab === 'all' || row.state_id === selectedTab) {
-        return row.name.toLowerCase().includes(searchTerm.toLowerCase());
-      } else {
-        return false;
-      }
-    });
-    setFilteredRows(newFilteredRows);
+    if (hasLoadedData && aprendizData) {      
+      const newFilteredRows = aprendizData.items.filter((row) => {   
+        if (selectedTab === 'all' ) {        
+          return row.name.toLowerCase().includes(searchTerm.toLowerCase());
+        } 
+        if (row.state_id === selectedTab) {
+          return row.name.toLowerCase().includes(searchTerm.toLowerCase());
+        }
+        else {
+          return false;
+        }
+      });
+      console.log('Filas filtradas:', newFilteredRows);
+      setFilteredRows(newFilteredRows);
+    }
   };
-};
   fetchDataAndFilter(); 
 }, [selectedTab, searchTerm, hasLoadedData, aprendizData]);
 
@@ -365,15 +394,27 @@ useEffect(() => {
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal text-purple-600">
-          Page 1 of 10
+          Página {pageValue} de {Math.round(totalValues / 5)}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm" color="purple">
-            Previous
-          </Button>
-          <Button variant="outlined" size="sm" color="purple">
-            Next
-          </Button>
+          <Button
+                variant="outlined"
+                size="sm"
+                color="purple"
+                onClick={handlePageChangeMinus}
+                disabled={pageValue === 1}
+              >
+                Anterior
+              </Button>
+            <Button
+                onClick={handlePageChangePlus}
+                variant="outlined"
+                size="sm"
+                color="purple"
+                disabled={pageValue === Math.round(totalValues / 5)}                
+              >
+                Siguiente
+              </Button>
         </div>
       </CardFooter>
     </Card>

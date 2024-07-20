@@ -46,6 +46,7 @@ export function UserList() {
   const [hasLoadedData, setHasLoadedData] = useState(false);
   const [pageValue, setPageValue] = useState(1);
   const rollByLocal = parseInt(localStorage.getItem('userRoll'))
+  const [totalValues, setTotalValues] = useState(0);
   const navigate = useNavigate();
   
   if (rollByLocal === 3){
@@ -65,8 +66,9 @@ export function UserList() {
       }
       const data = await response.json();
       console.log('Respuesta de la API:', data);
-      setPersonData(data);  
-      setFilteredRows(data);  
+      setPersonData(data.items);  
+      setFilteredRows(data.items);  
+      setTotalValues(data.total_items);
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -83,14 +85,14 @@ export function UserList() {
   }, [handleLoad, hasLoadedData])
 
   useEffect(() => {
-    if (hasLoadedData && !personData) {
+    if (hasLoadedData) {
       handleLoad();
+      console.log(personData);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageValue, handleLoad, hasLoadedData]);
+  }, [pageValue]);
 
-  const handleTabChange = (event, newValue) => {
-    console.log('Nuevo valor de tab:', newValue);
+  const handleTabChange = (event, newValue) => {  
     setSelectedTab(newValue);
     setFilteredRows([]);
   };
@@ -131,7 +133,11 @@ export function UserList() {
   }
 
   function handlePageChangeMinus() {  
-    setPageValue(prevPageValue => prevPageValue - 1);
+    if (pageValue > 1) {
+      setPageValue(prevPageValue => prevPageValue - 1);
+    } else {
+      setPageValue(1);
+    }
   }
 
   const handleEditUser = (document, roll,name, last_name, email, ficha, finishDate) => {
@@ -179,8 +185,7 @@ export function UserList() {
         <Card className="h-full w-full mt-12">
           <CardHeader floated={false} shadow={false} className="rounded-none ">
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row ">
-              <Tabs value={selectedTab} className="w-full md:w-max">
-                {console.log(selectedTab)}
+              <Tabs value={selectedTab} className="w-full md:w-max">              
                 <TabsHeader>
                   {TABS.map(({ label, value }) => (
                     <Tab
@@ -340,7 +345,7 @@ export function UserList() {
               color="blue-gray"
               className="font-normal text-purple-600"
             >
-              Page {pageValue} of 10
+              Página {pageValue} de {Math.ceil(totalValues / 9) + 1}
             </Typography>
             <div className="flex gap-2">
               <Button
@@ -348,6 +353,7 @@ export function UserList() {
                 size="sm"
                 color="purple"
                 onClick={handlePageChangeMinus}
+                disabled={pageValue === 1}
               >
                 Anterior
               </Button>
@@ -356,6 +362,7 @@ export function UserList() {
                 variant="outlined"
                 size="sm"
                 color="purple"
+                disabled={pageValue === Math.ceil(totalValues / 9) + 1}
               >
                 Siguiente
               </Button>
