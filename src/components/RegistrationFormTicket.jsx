@@ -6,6 +6,7 @@
     // const [placa, setPlaca] = useState("");
     // const [numero_marco, setNumero_marco] = useState("");
     const document = localStorage.getItem('userDocument');
+    const [vehiclePhoto, setVehiclePhoto] = useState(null);
     const [formData, setFormData] = useState({       
         document: document,
         vehicle_type: '',
@@ -42,6 +43,36 @@
         });
     };
 
+    const handleVehiclePhoto = (e) => {
+      const selectedImage = e.target.files[0];
+      setVehiclePhoto(selectedImage);
+      sendImageToS3Vehicle(selectedImage, 'foto');
+    };
+
+    const sendImageToS3Vehicle = async (image, fieldName) => {
+      try {
+        const formData2 = new FormData();
+        formData2.append('image', image);        
+    
+        const response = await fetch(`${API_URL}/upload_img_s3`, {
+          method: 'POST',
+          body: formData2,
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error en la solicitud');
+        }
+    
+        const data = await response.json();
+        console.log('Respuesta de la API:', data);
+        setFormData({ ...formData, photo: data.url});
+       
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
@@ -58,7 +89,7 @@
           const data = await response.json();
           console.log('Respuesta de la API:', data);
           alert('El ticket fue creado exitosamente');
-          window.location.replace('http://localhost:3000/TicketsTable');
+          window.location.href = '/TicketsTable';
       } catch (error) {
           console.error('Error:', error);
           console.log(formData);
@@ -195,15 +226,24 @@
                 <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
               </svg>
               <span class="text-s leading-normal">Selecciona un archivo</span>
-              <input type="file" id="foto_carnet" class="hidden" />
+              <input type="file" accept=".png,.jpg,.jpeg"
+               id="foto_carnet"
+               onChange={handleVehiclePhoto} 
+               className="hidden" />
             </label>
           </div>
+          {vehiclePhoto && (
+          <div className='mb-4'>
+            <p className=' text-center p-2 text-purple-600 font-bold'>Imagen seleccionada:</p>
+            <img src={URL.createObjectURL(vehiclePhoto)} alt="Imagen seleccionada" />
+          </div>
+          )}
           </div>
           <button
             className="w-full bg-amber-500 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
             type="submit"
           >
-            Continuar
+            Enviar
           </button>
         </form>
       </div>

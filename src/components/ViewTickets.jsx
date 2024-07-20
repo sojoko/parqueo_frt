@@ -8,7 +8,7 @@ export function ViewTickets() {
     const [documentAprendiz, setDocumentAprendiz] = useState("");
     const [aprendizData, setAprendizData] = useState(null);
     const { ticketId } = useParams();
-    const roll = localStorage.getItem('userRoll');
+    const roll = parseInt(localStorage.getItem('userRoll'));
 
     const handleLoad = useCallback(async () => {
         try {
@@ -169,7 +169,7 @@ export function ViewTickets() {
                     </div>                    
                 </div>
                 <div className='space-y-4'>
-                    <img className="h-52 md:h-52 ml-8" alt='icon' src='https://thumbs.dreamstime.com/z/ca%C3%ADda-de-motocicleta-en-zona-urbana-21218976.jpg?ct=jpeg'/>
+                    <img className="h-52 md:h-52 ml-8" alt='icon' src={ticketData.photo}/>
                     {roll === 1 && (
                     <form className="ml-auto space-y-4" onSubmit={handleSubmit}>
                         <input 
@@ -180,6 +180,7 @@ export function ViewTickets() {
                         id='subject'
                         value={formData.subject}
                         onChange={handleInputChange}
+                        disabled={ticketData.status === 2}
                         required
                         />
                         <textarea 
@@ -190,11 +191,16 @@ export function ViewTickets() {
                         id="message"
                         value={formData.message}
                         onChange={handleInputChange}
+                        disabled={ticketData.status === 2}
                         required
                         ></textarea>
                         <button  
                         type="submit" 
-                        className="text-white bg-amber-500 hover:bg-blue-600 font-semibold rounded-md text-sm px-4 py-2.5 w-full">Enviar</button>
+                        disabled={ticketData.status === 2}
+                        className={`text-white bg-amber-500 hover:bg-blue-600
+                         font-semibold rounded-md text-sm px-4 py-2.5 w-full ${ticketData.status === 2 ? 'bg-amber-200 cursor-not-allowed hover:bg-amber-200' : ''} ` }>
+                            Enviar
+                        </button>
                     </form>
                     )}
                 </div>

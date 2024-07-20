@@ -6,6 +6,8 @@ function ApredizTicketsTable() {
 
     const [loading, setLoading] = useState(false);
     const [ticketsData, setTicketsData] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [arregloInvertido, setArregloInvertido] = useState(null);
     const doc = localStorage.getItem('userDocument');
 
     const handleLoad = useCallback(async () => {
@@ -23,6 +25,8 @@ function ApredizTicketsTable() {
             const data = await response.json();
             console.log('Respuesta de la API:', data);
             setTicketsData(data);       
+            setIsLoaded(true);
+            console.log(ticketsData)           
             setLoading(false);    
            
         } catch (error) {
@@ -31,8 +35,17 @@ function ApredizTicketsTable() {
     }, [doc]);
         
     useEffect(() => {
+        if (isLoaded === true){
+            setArregloInvertido(ticketsData.reverse());   
+            console.log(arregloInvertido)
+        }
+    }, [isLoaded, ticketsData]); 
+        
+
+    useEffect(() => {
         if (!ticketsData){
             handleLoad();
+            
         }
     }, [ticketsData, handleLoad]); 
      return (
