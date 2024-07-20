@@ -13,7 +13,7 @@ function DashboardPage (){
 
     const generateReport = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/generate-report', {
+          const response = await axios.get(`${API_URL}/generate-report`, {
             responseType: 'blob',
           });
           const blob = new Blob([response.data], { type: 'application/pdf' });
