@@ -126,7 +126,7 @@ export function AprendizCardInfo() {
         try {
             const response = await fetch(`${API_URL}/parking-registration`, {
                 method: 'post',
-                body: JSON.stringify({ "user_document": document, "is_in_parking": 0, "vehicle_type": vehicleData.vehicle_type, "created_at": "", "updated_at": "", "deleted_at": "" }),
+                body: JSON.stringify({ "user_document": document, "is_in_parking": 0, "vehicle_type": vehicleData[0].vehicle_type, "created_at": "", "updated_at": "", "deleted_at": "" }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -268,13 +268,13 @@ export function AprendizCardInfo() {
                                 }
                             />
                             <Typography color="blue-gray" variant="h5" className="font-medium mt-6" textGradient>
-                                Vehiculo Modelo: {vehicleData.modelo}
+                                Vehiculo Modelo: {vehicleData[0].modelo}
                             </Typography>
                             <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                                Vehiculo Marca: {vehicleData.marca}
+                                Vehiculo Marca: {vehicleData[0].marca}
                             </Typography>
                             <Typography color="blue-gray" variant="h5" className="font-medium" textGradient>
-                                Vehiculo Color: {vehicleData.color}
+                                Vehiculo Color: {vehicleData[0].color}
                             </Typography>
     
                             <button onClick={handleDocument}>

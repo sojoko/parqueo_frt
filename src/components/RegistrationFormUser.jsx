@@ -22,7 +22,7 @@ import { API_URL } from "../config/API_URLS.tsx";
 
   // });
     const [formVehicleDataMoto, setFormVehicleDataMoto] = useState({
-      marca: '',
+      marca: 'Yamaha',
       placa: '',
       modelo: '',
       color: '',
@@ -256,8 +256,6 @@ import { API_URL } from "../config/API_URLS.tsx";
       // }
       setContinueButton(true)
     };
-
- 
 
   return (
     <>
