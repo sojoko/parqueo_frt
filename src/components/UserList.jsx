@@ -52,6 +52,15 @@ export function UserList() {
   if (rollByLocal === 3){
     TABLE_HEAD = ["Nombre", "Roll", "Fecha de registro"];
   }
+
+
+  // const updatedArray = array.map(item => {
+  //   if (item.roll === "vigilante") {
+  //     return { ...item, photo: "https://d351ygrurko1q2.cloudfront.net/images.png" };
+  //   }
+  //   return item;
+  // });
+
   const handleLoad = useCallback(async () => {
     try {
       setLoading(true);
@@ -66,7 +75,23 @@ export function UserList() {
       }
       const data = await response.json();
       console.log('Respuesta de la API:', data);
-      setPersonData(data.items);  
+
+      const updatedArray = data.items.map(item => {
+        if (item.roll === "vigilante") {
+          return { ...item, photo: "https://d351ygrurko1q2.cloudfront.net/images.png" };
+        
+        }
+        if (item.roll === "admin") {
+          return { ...item, photo: "https://d351ygrurko1q2.cloudfront.net/png-transparent-man-avatar-user-business-avatar-icon.png" };
+        }
+      
+        return item;
+      });
+    
+      setPersonData(updatedArray);  
+
+
+
       setFilteredRows(data.items);  
       setTotalValues(data.total_items);
     } catch (error) {
