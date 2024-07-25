@@ -2,8 +2,9 @@ import React from "react";
 import { API_URL } from "../config/API_URLS.tsx";
 
 function RequestProcessModal(props) {
-  console.log('props', props.document);
+  
   let stateId = 0;
+  const token = localStorage.getItem('access_token');
 
   function handlerStateIdAccept() {
       stateId = 2;
@@ -21,7 +22,8 @@ function RequestProcessModal(props) {
             method: 'put',
             body: JSON.stringify({"document": props.document, "state_id": stateId}),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
         if (!response.ok) {

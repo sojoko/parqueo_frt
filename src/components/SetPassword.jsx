@@ -12,6 +12,7 @@ function SetPassword() {
     const [password, setPassword] = useState("");
     const rollSender = queryParams.get('roll') || '';
     const [homeRedirect, setHomeRedirect] = useState(false);
+    const token = localStorage.getItem('access_token');
     
     const handleSubmit =  async (event) => {
         event.preventDefault();
@@ -22,7 +23,8 @@ function SetPassword() {
                 method: 'post',
                 body: JSON.stringify({"document": documentSender, password, "roll_id": rollSender}),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }                
             });
             if (response.status === 400) {

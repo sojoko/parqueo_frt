@@ -6,13 +6,15 @@ import { API_URL } from '../config/API_URLS.tsx';
 function ShowStatusButton( {documento} ) {
     const [showMessage, setShowMessage] = useState(false);
     const [state, setState] = useState("");
+    const token = localStorage.getItem('access_token');
 
     const handleClick =  async () => {  
         try {
             const response = await fetch(`${API_URL}/aprendiz-status/${documento}`, {
               method: 'get',          
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
               }                
             });
   

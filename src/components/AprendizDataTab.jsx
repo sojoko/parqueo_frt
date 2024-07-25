@@ -48,6 +48,8 @@ export function AprendizDataTab() {
   const [selectedVPhotoUrl, setSelectedVPhotoUrl] = useState(null);
   // const [selectedDocument, setSelectedDocument] = useState(null);
 
+  const token = localStorage.getItem('access_token');
+
   const handleLoad = useCallback(async () => {
     try {
       setLoading(true);
@@ -57,6 +59,7 @@ export function AprendizDataTab() {
           method: "get",
           headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
         }
       );

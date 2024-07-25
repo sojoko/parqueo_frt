@@ -12,6 +12,8 @@ export const DashboardGeneral = () => {
   });
 
 
+  const token = localStorage.getItem('access_token');
+  
 const options = {
   chart: {
     fontFamily: 'Satoshi, sans-serif',
@@ -75,7 +77,8 @@ const options = {
         const response = await fetch(`${API_URL}/parking-all-counter`, {
             method: 'get',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
         if (!response.ok) {

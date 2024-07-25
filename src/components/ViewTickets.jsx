@@ -10,13 +10,16 @@ export function ViewTickets() {
     const { ticketId } = useParams();
     const roll = parseInt(localStorage.getItem('userRoll'));
 
+    const token = localStorage.getItem('access_token');
+
     const handleLoad = useCallback(async () => {
         try {
             setLoading(true);
             const response = await fetch(`${API_URL}/Ticket/id/${ticketId}`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -37,7 +40,8 @@ export function ViewTickets() {
                 const response = await fetch(`${API_URL}/aprendices/${documentAprendiz}`, {
                     method: 'get',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 if (!response.ok) {
@@ -84,7 +88,8 @@ export function ViewTickets() {
                 method: 'put',
                 body: JSON.stringify(formData),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {

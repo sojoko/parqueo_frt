@@ -28,6 +28,7 @@ export function AprendizCardInfo() {
     const [parkingCounter, setParkingCounter] = useState(null);
     const [parkingLoaded, setParkingLoaded] = useState(false);
 
+    const token = localStorage.getItem('access_token');
 
     const handleLoad = useCallback(async () => {
         try {
@@ -35,7 +36,8 @@ export function AprendizCardInfo() {
             const response = await fetch(`${API_URL}/aprendices/${document}`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -54,7 +56,8 @@ export function AprendizCardInfo() {
             const response = await fetch(`${API_URL}/vehicle/${document}`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -75,7 +78,8 @@ export function AprendizCardInfo() {
             const response = await fetch(`${API_URL}/parking-all-counter`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -98,7 +102,8 @@ export function AprendizCardInfo() {
             const response = await fetch(`${API_URL}/parking-by-document/${document}`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -128,7 +133,8 @@ export function AprendizCardInfo() {
                 method: 'post',
                 body: JSON.stringify({ "user_document": document, "is_in_parking": 0, "vehicle_type": vehicleData[0].vehicle_type, "created_at": "", "updated_at": "", "deleted_at": "" }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {

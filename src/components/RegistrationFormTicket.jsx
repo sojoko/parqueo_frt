@@ -7,6 +7,9 @@
     // const [numero_marco, setNumero_marco] = useState("");
     const document = localStorage.getItem('userDocument');
     const [vehiclePhoto, setVehiclePhoto] = useState(null);
+
+    const token = localStorage.getItem('access_token');
+  
     const [formData, setFormData] = useState({       
         document: document,
         vehicle_type: '',
@@ -55,8 +58,11 @@
         formData2.append('image', image);        
     
         const response = await fetch(`${API_URL}/upload_img_s3`, {
-          method: 'POST',
+          method: 'POST',        
           body: formData2,
+          headers: {            
+            'Authorization': `Bearer ${token}`
+          },
         });
         
         if (!response.ok) {
@@ -80,7 +86,8 @@
               method: 'post',
               body: JSON.stringify(formData),
               headers: {
-                  'Content-Type': 'application/json'
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
               }
           });
           if (!response.ok) {

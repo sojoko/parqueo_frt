@@ -10,13 +10,16 @@ function ApredizTicketsTable() {
     const [arregloInvertido, setArregloInvertido] = useState(null);
     const doc = localStorage.getItem('userDocument');
 
+    const token = localStorage.getItem('access_token');
+
     const handleLoad = useCallback(async () => {
         try {
             setLoading(true);
             const response = await fetch(`${API_URL}/Tickets-by-user/${doc}`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {

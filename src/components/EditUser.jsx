@@ -20,6 +20,7 @@ function EditUser() {
   // const finishDateByParams = queryParams.get('finish_date');
   
   const navigate = useNavigate();
+  const token = localStorage.getItem('access_token');
 
 
 const handlerDelete = async () => { 
@@ -27,7 +28,8 @@ const handlerDelete = async () => {
     const response = await fetch(`${API_URL}/users/delete/${document}/${rollByParams}`, {
         method: 'delete',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     });
     if (!response.ok) {      
@@ -76,7 +78,8 @@ const handlerDelete = async () => {
             method: 'put',
             body: bodyPre,
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             }                
           });
 

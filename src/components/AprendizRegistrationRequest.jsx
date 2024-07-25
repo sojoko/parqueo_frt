@@ -54,6 +54,8 @@ const [selectedDocument, setSelectedDocument] = useState(null);
 const [pageValue, setPageValue] = useState(1);
 const [totalValues, setTotalValues] = useState(0);
 
+const token = localStorage.getItem('access_token');
+
 
 function handlePageChangeMinus() {  
   if (pageValue > 1) {
@@ -75,7 +77,8 @@ async function handleLoad() {
       const response = await fetch(`${API_URL}/aprendiz-status?page=${pageValue}`, {
           method: 'get',
           headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
           }
       });
       if (!response.ok) {

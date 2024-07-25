@@ -32,7 +32,8 @@ import { API_URL } from "../config/API_URLS.tsx";
 
   });
 
-
+    const token = localStorage.getItem('access_token');
+  
     const [continueButton, setContinueButton] = useState(false);
     const [vehicleType, setVehicleType] = useState("tipo");
     const [image, setImage] = useState(null);
@@ -134,7 +135,8 @@ import { API_URL } from "../config/API_URLS.tsx";
                 method: 'post',
                 body: JSON.stringify(formData),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
            
@@ -191,6 +193,9 @@ import { API_URL } from "../config/API_URLS.tsx";
         const response = await fetch(`${API_URL}/upload_img_s3`, {
           method: 'POST',
           body: formData2,
+          headers: {            
+            'Authorization': `Bearer ${token}`
+          },
         });
     
         if (!response.ok) {
@@ -214,6 +219,9 @@ import { API_URL } from "../config/API_URLS.tsx";
         const response = await fetch(`${API_URL}/upload_img_s3`, {
           method: 'POST',
           body: formData2,
+          headers: {            
+            'Authorization': `Bearer ${token}`
+          },
         });
         
         if (!response.ok) {

@@ -30,6 +30,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       localStorage.setItem('userRoll', x.user_roll);
       localStorage.setItem('isAuthenticated', true);
       localStorage.setItem('userDocument', x.document);
+      localStorage.setItem('access_token', x.access_token);
     });
   }
 

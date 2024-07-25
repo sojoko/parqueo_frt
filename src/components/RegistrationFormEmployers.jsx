@@ -14,6 +14,8 @@ function RegistrationFormEmployers() {
   const queryParams = new URLSearchParams(location.search);  
   const rollSender = parseInt(queryParams.get('rollSender')) || '';
 
+  const token = localStorage.getItem('access_token');
+
   const handleSubmit =  async (event) => {
       event.preventDefault();
 
@@ -30,7 +32,8 @@ function RegistrationFormEmployers() {
             method: 'post',
             body: JSON.stringify({ name, last_name, document, "registry_date": "string"}),
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             }                
           });
 

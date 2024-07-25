@@ -9,6 +9,7 @@ function TicketsTable() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [arregloInvertido, setArregloInvertido] = useState(null);
 
+    const token = localStorage.getItem('access_token');
   
 
     const handleLoad = useCallback(async () => {
@@ -17,7 +18,8 @@ function TicketsTable() {
             const response = await fetch(`${API_URL}/Tickets`, {
                 method: 'get',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -39,7 +41,7 @@ function TicketsTable() {
         handleLoad();
         }
     }, [ticketsData, handleLoad]); 
-
+        
 
     useEffect(() => {
         if (isLoaded === true){
