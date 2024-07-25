@@ -48,6 +48,7 @@ export function UserList() {
   const rollByLocal = parseInt(localStorage.getItem('userRoll'))
   const [totalValues, setTotalValues] = useState(0);
   const navigate = useNavigate();
+  const token = localStorage.getItem('access_token');
   
   if (rollByLocal === 3){
     TABLE_HEAD = ["Nombre", "Roll", "Fecha de registro"];
@@ -67,7 +68,8 @@ export function UserList() {
       const response = await fetch(`${API_URL}/all-persons?page=${pageValue}&per_page=3`, {
         method: 'get',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -100,7 +102,7 @@ export function UserList() {
       setLoading(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageValue, personData]);
+  }, [pageValue, personData, token]);
 
   useEffect(() => {
     if (!hasLoadedData) {

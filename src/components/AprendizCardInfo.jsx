@@ -49,7 +49,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }, [document]);
+    }, [document, token]);
 
     const handleLoad2 = useCallback(async () => {
         try {
@@ -71,7 +71,7 @@ export function AprendizCardInfo() {
         } finally {
             // setLoading(false);
         }
-    }, [document]);
+    }, [document, token]);
 
     const handleLoad3 = useCallback(async () => {
         try {
@@ -95,7 +95,7 @@ export function AprendizCardInfo() {
           
             setLoading(false);
         }
-    }, []);
+    }, [token]);
 
     const handleLoadParking = useCallback(async () => {
         try {
@@ -125,7 +125,7 @@ export function AprendizCardInfo() {
             setParkingLoaded(true);
             // setLoading(false);
         }
-    }, [document]);
+    }, [document, token]);
 
     const handleSetParkingStatus = useCallback(async () => {
         try {
@@ -147,7 +147,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }, [document, vehicleData]);
+    }, [document, vehicleData, token]);
     
     const handleChangeParkingStatus = useCallback(async () => {
         console.log('Parking Counter:', parkingCounter)
@@ -162,7 +162,8 @@ export function AprendizCardInfo() {
                 method: 'put',
                 body: JSON.stringify({ "user_document": document, "is_in_parking": parkingStatusForSent, "created_at": "", "updated_at": "", "deleted_at": "" }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
@@ -175,7 +176,7 @@ export function AprendizCardInfo() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }, [document, parkingStatus, parkingCounter]);
+    }, [document, parkingStatus, parkingCounter, token]);
 
     useEffect(() => {
         const loadAllData = async () => {

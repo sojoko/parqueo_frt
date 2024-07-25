@@ -34,7 +34,7 @@ function ApredizTicketsTable() {
         } catch (error) {
             console.error('Error:', error);
         } 
-    }, [doc]);
+    }, [doc, token]);
         
     useEffect(() => {
         if (isLoaded === true){

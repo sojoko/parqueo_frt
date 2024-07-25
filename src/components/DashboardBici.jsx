@@ -91,7 +91,7 @@ const options = {
     finally {
       setLoading(false);
    }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (parkingData === false) {

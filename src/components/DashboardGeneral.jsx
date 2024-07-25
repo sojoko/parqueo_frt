@@ -99,7 +99,6 @@ const options = {
         // const percentTotalCapacity = (totalCapacity * 100) / 40;
         setTotalCapacityOut(totalCapacity);
         console.log('totalCapacityOut:', totalCapacityOut);
-        
        
     } catch (error) {
         console.error('Error:', error);
@@ -107,7 +106,7 @@ const options = {
     finally {
       setLoading(false);
    }
-  }, [totalCapacityOut]);
+  }, [totalCapacityOut, token]);
 
   useEffect(() => {
     if (parkingData === false) {

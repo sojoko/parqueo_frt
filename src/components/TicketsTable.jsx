@@ -34,7 +34,7 @@ function TicketsTable() {
         } catch (error) {
             console.error('Error:', error);
         } 
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         if (!ticketsData){

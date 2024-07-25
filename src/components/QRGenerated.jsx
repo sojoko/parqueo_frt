@@ -10,6 +10,8 @@ function QRGenerated() {
         setIsActive(!isActive);
     }
 
+    const token = localStorage.getItem('access_token');
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const document = localStorage.getItem('userDocument');
@@ -18,7 +20,8 @@ function QRGenerated() {
                 method: 'post',
                 body: JSON.stringify({ user_document: 0, "registry_date": "string" }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {

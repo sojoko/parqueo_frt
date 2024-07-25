@@ -75,7 +75,7 @@ export function AprendizDataTab() {
       setLoading(false);
       console.log(aprendizData);
     }
-  }, [documentByParams, aprendizData]);
+  }, [documentByParams, aprendizData, token]);
 
   
   // const handleOpenModal = (document) => {

@@ -31,7 +31,7 @@ export function ViewTickets() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }, [ticketId]);
+    }, [ticketId, token]);
 
     const handleLoadUser = useCallback(async () => {
         if (documentAprendiz) {
@@ -54,7 +54,7 @@ export function ViewTickets() {
                 console.error('Error:', error);
             }        
         }
-    }, [documentAprendiz]);
+    }, [documentAprendiz, token]);
 
     useEffect(() => {
         handleLoad();
