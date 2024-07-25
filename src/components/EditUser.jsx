@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -16,8 +16,7 @@ function EditUser() {
   const [name, setName] = useState(nameByParams);
   const [document, setDocument] = useState(documentByParams);
   const emailByParams = queryParams.get('email');
-  const fichaByParams = queryParams.get('ficha');
-  const [a, setA] = useState();
+  const fichaByParams = queryParams.get('ficha'); 
   // const finishDateByParams = queryParams.get('finish_date');
   
   const navigate = useNavigate();
@@ -31,9 +30,8 @@ const handlerDelete = async () => {
             'Content-Type': 'application/json'
         }
     });
-    if (response.ok) {
-      setA(1);
-      return;
+    if (!response.ok) {      
+      throw new Error('Error en la solicitud');
     }
     const data = await response.json();
     console.log('Respuesta de la API:', data); 
