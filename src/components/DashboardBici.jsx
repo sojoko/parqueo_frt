@@ -148,7 +148,7 @@ const options = {
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
       <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#f5780b]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#7e22ce]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Bicicletas </span>
               <span> {parkingData.percent_bycicle_ocupation}% </span>

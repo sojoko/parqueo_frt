@@ -6,9 +6,9 @@ import { useEffect } from 'react';
 export const DashboardGeneral = () => {
   const [loading, setLoading] = useState(false);
   const [parkingData, setParkingData] = useState(false);
-  const [totalCapacityOut, setTotalCapacityOut] = useState(null);
+  // const [totalCapacityOut, setTotalCapacityOut] = useState(null);
   const [state, setState] = useState({
-    series: [40, 40, 20],
+    series: [0, 0, 0],
   });
 
 
@@ -84,11 +84,18 @@ const options = {
         const data = await response.json();
         console.log('Respuesta de la API:', data);
         setParkingData(data);
-        const {motocycle_in_parking, actually_motorcycle_capacity, bycicle_in_parking, actually_bycicle_capacity,  } = data;
-        const totalCapacity = actually_motorcycle_capacity + actually_bycicle_capacity;
-        const percentTotalCapacity = (totalCapacity * 100) / 40;
-        setTotalCapacityOut(percentTotalCapacity);
+        const {motocycle_in_parking, actually_motorcycle_capacity, bycicle_in_parking, actually_bycicle_capacity, capacity_bycicle, capacity_motorcycle
+        } = data;        
+        const totalCapacity =  capacity_bycicle + capacity_motorcycle - (motocycle_in_parking + bycicle_in_parking);
         updateSeries(motocycle_in_parking,bycicle_in_parking,totalCapacity);
+
+        const percentMotorcycle = (actually_motorcycle_capacity * 100) / capacity_motorcycle;
+
+
+
+        const percentTotalCapacity = (totalCapacity * 100) / 40;
+        setTotalCapacityOut(totalCapacity);
+       
         
        
     } catch (error) {
@@ -181,18 +188,19 @@ const options = {
           <ReactApexChart
             options={options}
             series={state.series}
+           
             type="donut"
           />
         </div>
       </div>
 
-      <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
+      {/* <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8c470a]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#7e22ce]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Bicicletas </span>
-              <span> {parkingData.percent_bycicle_ocupation}% </span>
+              <span> {state.series[1]}% </span>
             </p>
           </div>
         </div>
@@ -201,7 +209,7 @@ const options = {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#f5780b]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Motocicletas </span>
-              <span> {parkingData.percent_motorcycle_ocupation}%  </span>
+              <span> {state.series[0]}%  </span>
             </p>
           </div>
         </div>
@@ -214,7 +222,7 @@ const options = {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
     )}
     </>

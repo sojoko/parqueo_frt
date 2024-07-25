@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -17,12 +17,42 @@ function EditUser() {
   const [document, setDocument] = useState(documentByParams);
   const emailByParams = queryParams.get('email');
   const fichaByParams = queryParams.get('ficha');
+  const [a, setA] = useState();
   // const finishDateByParams = queryParams.get('finish_date');
   
   const navigate = useNavigate();
 
 
+const handlerDelete = async () => { 
+  try {    
+    const response = await fetch(`${API_URL}/users/delete/${document}/${rollByParams}`, {
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    if (response.ok) {
+      setA(1);
+      return;
+    }
+    const data = await response.json();
+    console.log('Respuesta de la API:', data); 
 
+   
+} catch (error) {
+    console.error('Error:', error);
+}
+
+}
+
+useEffect(() => {
+  if (a === 1) {
+    alert('Usuario eliminado con exito');
+    navigate('/users-administration-list');
+    console.log('Usuario eliminado con exito');
+
+  }
+}, [a]);
 
   const handleSubmit =  async (event) => {
       event.preventDefault();
@@ -150,6 +180,14 @@ function EditUser() {
             onClick={handleSubmit}
           >
             Continuar
+          </button>
+
+          <button
+            className="w-full bg-red-400 mt-4 text-white text-s font-bold py-2 px-4 rounded-md hover:bg-purple-600 transition duration-300"
+            type="submit"
+            onClick={handlerDelete}
+          >
+            Eliminar usuario
           </button>
         </form>
       </div>
