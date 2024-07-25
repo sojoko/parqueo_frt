@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 export const DashboardGeneral = () => {
   const [loading, setLoading] = useState(false);
   const [parkingData, setParkingData] = useState(false);
-  // const [totalCapacityOut, setTotalCapacityOut] = useState(null);
+  const [totalCapacityOut, setTotalCapacityOut] = useState(null);
   const [state, setState] = useState({
     series: [0, 0, 0],
   });
@@ -95,7 +95,7 @@ const options = {
 
         const percentTotalCapacity = (totalCapacity * 100) / 40;
         setTotalCapacityOut(totalCapacity);
-       
+        console.log('totalCapacityOut:', totalCapacityOut);
         
        
     } catch (error) {
