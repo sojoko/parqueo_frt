@@ -84,16 +84,16 @@ const options = {
         const data = await response.json();
         console.log('Respuesta de la API:', data);
         setParkingData(data);
-        const {motocycle_in_parking, actually_motorcycle_capacity, bycicle_in_parking, actually_bycicle_capacity, capacity_bycicle, capacity_motorcycle
+        const {motocycle_in_parking, actually_motorcycle_capacity, bycicle_in_parking, capacity_bycicle, capacity_motorcycle
         } = data;        
         const totalCapacity =  capacity_bycicle + capacity_motorcycle - (motocycle_in_parking + bycicle_in_parking);
         updateSeries(motocycle_in_parking,bycicle_in_parking,totalCapacity);
 
-        const percentMotorcycle = (actually_motorcycle_capacity * 100) / capacity_motorcycle;
+        // const percentMotorcycle = (actually_motorcycle_capacity * 100) / capacity_motorcycle;
 
 
 
-        const percentTotalCapacity = (totalCapacity * 100) / 40;
+        // const percentTotalCapacity = (totalCapacity * 100) / 40;
         setTotalCapacityOut(totalCapacity);
         console.log('totalCapacityOut:', totalCapacityOut);
         
@@ -104,7 +104,7 @@ const options = {
     finally {
       setLoading(false);
    }
-  }, []);
+  }, [totalCapacityOut]);
 
   useEffect(() => {
     if (parkingData === false) {

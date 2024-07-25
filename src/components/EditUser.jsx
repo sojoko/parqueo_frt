@@ -45,14 +45,14 @@ const handlerDelete = async () => {
 
 }
 
-useEffect(() => {
-  if (a === 1) {
-    alert('Usuario eliminado con exito');
-    navigate('/users-administration-list');
-    console.log('Usuario eliminado con exito');
+// useEffect(() => {
+//   if (a === 1) {
+//     alert('Usuario eliminado con exito');
+//     navigate('/users-administration-list');
+//     console.log('Usuario eliminado con exito');
 
-  }
-}, [a]);
+//   }
+// }, [a, nav]);
 
   const handleSubmit =  async (event) => {
       event.preventDefault();
